@@ -72,3 +72,106 @@ function generateCylinderGeometry(sample) {
     }
     return cylinderMesh;
 }
+
+function generateSquarePyramidGeometry() {
+	var squarePyramidMesh={vertices:[],texCoords:[], normals:[]};
+	// TARA: start with the vertex positions. I'm not sure how to define them procedurally, so I'm doing
+	// it explicitly
+	squarePyramidMesh.vertices = [
+		// Base
+		vec3( -1, -1, 0),
+		vec3( -1,  1, 0),
+		vec3(  1, -1, 0),
+		vec3( -1,  1, 0),
+		vec3(  1, -1, 0),
+		vec3(  1,  1, 0),
+		// "Left" panel
+		vec3( -1, -1, 0),
+		vec3( -1,  1, 0),
+		vec3(  0,  1, 1),
+		vec3( -1, -1, 0),
+		vec3(  0,  1, 1),
+		vec3(  0, -1, 1),
+		// "Right" panel
+		vec3(  1, -1, 0),
+		vec3(  1,  1, 0),
+		vec3(  0, -1, 1),
+		vec3(  1,  1, 0),
+		vec3(  0, -1, 1),
+		vec3(  0,  1, 1),
+		// "Back" face
+		vec3( -1,  1, 0),
+		vec3(  1,  1, 0),
+		vec3(  0,  1, 1),
+		// "Front" face
+		vec3(  1, -1, 0),
+		vec3( -1, -1, 0),
+		vec3(  0, -1, 1)
+	];
+
+	squarePyramidMesh.texCoords = [
+		// Base
+		vec2(0,0),
+		vec2(0,1),
+		vec2(1,0),
+		vec2(0,1),
+		vec2(1,0),
+		vec2(1,1),
+		// "Left" panel
+		vec2(0,0),
+		vec2(0,1),
+		vec2(1,0),
+		vec2(0,1),
+		vec2(1,0),
+		vec2(1,1),
+		// "Right" panel
+		vec2(0,0),
+		vec2(0,1),
+		vec2(1,0),
+		vec2(0,1),
+		vec2(1,0),
+		vec2(1,1),
+		// "Back" face
+		vec2(0,0),
+		vec2(1,0),
+		vec2(0.5,1),
+		// "Front" face
+		vec2(0,0),
+		vec2(1,0),
+		vec2(0.5,1)
+	];
+
+	squarePyramidMesh.normals = [
+		// Base
+		vec3(0,0,-1),
+		vec3(0,0,-1),
+		vec3(0,0,-1),
+		vec3(0,0,-1),
+		vec3(0,0,-1),
+		vec3(0,0,-1),
+		// "Left" panel
+		vec3(-1,0,0),
+		vec3(-1,0,0),
+		vec3(-1,0,0),
+		vec3(-1,0,0),
+		vec3(-1,0,0),
+		vec3(-1,0,0),
+		// "Right" panel
+		vec3(1,0,0),
+		vec3(1,0,0),
+		vec3(1,0,0),
+		vec3(1,0,0),
+		vec3(1,0,0),
+		vec3(1,0,0),
+		// "Back" face
+		vec3(0,-1,0),
+		vec3(0,-1,0),
+		vec3(0,-1,0),
+		// "Front" face
+		vec3(0,1,0),
+		vec3(0,1,0),
+		vec3(0,1,0),
+	];
+
+	return squarePyramidMesh;
+}

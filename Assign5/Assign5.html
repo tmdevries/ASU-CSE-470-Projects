@@ -44,10 +44,11 @@ varying vec2 vTexCoord;
 varying vec3 vTNormal;
 varying vec4 vPosition;
 
-uniform vec3 uAmbientColor;
+uniform vec3 uCameraPosition;
 uniform vec3 uLightPosition;
-uniform vec3 uDiffuseLightColor;
-uniform vec3 uSpecularLightColor;
+uniform vec3 uAmbientColor;
+uniform vec3 uDiffuseColor;
+uniform vec3 uSpecularColor;
 uniform float uShininess;
 
 void
@@ -55,12 +56,22 @@ main()
 {
 	// Light
 	vec3 phongLight;
+	vec3 normal = normalize(vTNormal);
     vec3 lightDirection = normalize(uLightPosition - vPosition.xyz);
-	float diffuseLightReflection = max(dot(normalize(vTNormal), lightDirection), 0.0);
-    phongLight = uAmbientColor + uLightColor * diffuseLightReflection;
+    
+    // Diffuse
+	float diffuseContribution = max(dot(normal, lightDirection), 0.0);
+
+	// Specular
+    vec3 eyeDirection = normalize(uCameraPosition-vPosition.xyz);
+    vec3 reflectionDirection = reflect(-lightDirection, normal);
+    float specularContribution = pow(max(dot(reflectionDirection, eyeDirection), 0.0), uShininess);
+
+    // Final lighting
+    phongLight = uAmbientColor + uDiffuseColor * diffuseContribution + uSpecularColor * specularContribution;
 
     // Final color
-    vec4 fragmentColor = vec4(0.2, 0.2, 0.2, 1.0);
+    vec4 fragmentColor = vec4(1.0, 1.0, 1.0, 1.0);
     gl_FragColor = vec4(fragmentColor.rgb * phongLight, fragmentColor.a);
      
 }

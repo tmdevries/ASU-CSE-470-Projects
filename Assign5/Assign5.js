@@ -11,9 +11,9 @@ var modelView;
 var projection;
 
 var mvParams = {
-    scaleFactorX: 0.7,
-    scaleFactorY: 0.7,
-    scaleFactorZ: 0.7,
+    scaleFactorX: 0.3,
+    scaleFactorY: 0.3,
+    scaleFactorZ: 0.5,
     rotateTheta: 0.0,
     dX: 0.0,
     dY: 0.0,
@@ -23,21 +23,24 @@ var mvParams = {
 var lpParams = {
     step: 0, // TARA: for rotation
     stepMax: 600,
-    eye: vec3( 0.0 , -2.0 , 2.0 ), // TARA: position of the camera
+    eye: vec3( 0.0 , 0.0 , 1.0 ), // TARA: position of the camera
     at: vec3( 0, 0, 0 ), // TARA: what point the camera is looking at
     up: vec3( 0, 0, 1 ), // TARA: Vector that tells the camera which way it's oriented. Eg. -1 for y makes the world look up-side down
     pMatrix: perspective( 45, 1.0, 0.1, 100 )
 }; // TARA: This is the same for all geometries so that is why it is only defined once.
 
 var lighting = {
-    lightPosition: vec3( 0.0, -15.0, 15.0 ),
-    lightColor: vec3( 1.0, 1.0, 1.0 ), // white light
-    ambient: vec3( 0.5, 0.5, 0.5 ) // also white light
+    lightPosition: vec3( 1.0, 1.0, 1.0 ),
+    ambientColor: vec3( 0.135, 0.2225, 0.1575 ),
+    diffuseColor: vec3( 0.54, 0.89, 0.63 ),
+    specularColor: vec3( 0.316228, 0.316228, 0.316228 )
 };
 
-var sample = 12;
+var sample = 30;
 var cylinderMesh;
 var cylinderMeshParams;
+var squarePyramidMesh;
+var squarePyramidMeshParams;
 
 window.onload = function init()
 {
@@ -62,11 +65,18 @@ window.onload = function init()
     // TARA: I have created another file entitled modelData.js and included it in the html file.
     // modelData.js contains functions which will procedurally generate the model data for all of
     // my geometry
-    cylinderMesh = generateCylinderGeometry(sample); // pass in sample
-
-    cylinderMeshParams = {
+    //cylinderMesh = generateCylinderGeometry(sample); // pass in sample
+    squarePyramidMesh = generateSquarePyramidGeometry();
+    // cylinderMeshParams = {
+    //     materialShininess: 12.8,
+    //     itemSize: 3,
+    //     numItems: sample*12,
+    //     drawMethod: gl.TRIANGLES
+    // };
+    squarePyramidMeshParams = {
+        materialShininess: 12.8,
         itemSize: 3,
-        numItems: sample*12,
+        numItems: 24,
         drawMethod: gl.TRIANGLES
     };
 
@@ -92,8 +102,11 @@ function attributeBuffersInit() {
     shaderProgram.normalMatrixUniform = gl.getUniformLocation(shaderProgram, "NMatrix");
 
     // light uniforms
+    shaderProgram.cameraPositionUniform = gl.getUniformLocation(shaderProgram, "uCameraPosition");
     shaderProgram.lightPositionUniform = gl.getUniformLocation(shaderProgram, "uLightPosition");
-    shaderProgram.lightColorUniform = gl.getUniformLocation(shaderProgram, "uLightColor");
+    shaderProgram.diffuseColorUniform = gl.getUniformLocation(shaderProgram, "uDiffuseColor");
+    shaderProgram.specularColorUniform = gl.getUniformLocation(shaderProgram, "uSpecularColor");
+    shaderProgram.specularShininessUniform = gl.getUniformLocation(shaderProgram, "uShininess");
     shaderProgram.ambientColorUniform = gl.getUniformLocation(shaderProgram, "uAmbientColor");
 }
 //------------------------------------------------------------
@@ -101,7 +114,8 @@ function render() {
 
     gl.clear( gl.COLOR_BUFFER_BIT );
 
-    draw(cylinderMesh, cylinderMeshParams);
+    //draw(cylinderMesh, cylinderMeshParams);
+    draw(squarePyramidMesh, squarePyramidMeshParams);
     
     window.requestAnimFrame(render);
 }
@@ -132,9 +146,12 @@ function draw(mesh, meshParams) {
     gl.uniformMatrix4fv(shaderProgram.projectionMatrixUniform, false, flatten(projection));
 
     // TARA: Pass in the lighting uniforms
+    gl.uniform3fv(shaderProgram.cameraPositionUniform, flatten(lpParams.eye));
     gl.uniform3fv(shaderProgram.lightPositionUniform, flatten(lighting.lightPosition));
-    gl.uniform3fv(shaderProgram.lightColorUniform, flatten(lighting.lightColor));
-    gl.uniform3fv(shaderProgram.ambientColorUniform, flatten(lighting.ambient));
+    gl.uniform3fv(shaderProgram.diffuseColorUniform, flatten(lighting.diffuseColor));
+    gl.uniform3fv(shaderProgram.specularColorUniform, flatten(lighting.specularColor));
+    gl.uniform3fv(shaderProgram.ambientColorUniform, flatten(lighting.ambientColor));
+    gl.uniform1f(shaderProgram.specularShininessUniform, meshParams.materialShininess);
     
     // TARA: Now it's time to load the texture coordinates. The itemSize of this is always 2.
     gl.bindBuffer(gl.ARRAY_BUFFER, triangleTextCoordBuffer);
