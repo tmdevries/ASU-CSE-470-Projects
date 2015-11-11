@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+<title>Assignment 5 - Nyan Cat</title>
+
+<!-- Code below is the vertex-shader ---------------------- -->
+<script id="vertex-shader" type="x-shader/x-vertex">
+attribute vec3 aPosition;
+attribute vec2 aTexCoord;
+attribute vec3 aNormal;
+
+varying vec2 vTexCoord;
+varying vec3 vTNormal;
+varying vec4 vPosition;
+
+uniform mat4 MVMatrix;
+uniform mat4 PMatrix;
+uniform mat3 NMatrix;
+
+void
+main()
+{
+	// Get vertex positions
+	vPosition = MVMatrix * vec4(aPosition, 1.0);
+    gl_Position = PMatrix * vPosition;
+
+    // Set up texture coordinates
+    vTexCoord = aTexCoord;
+
+    // Set up for light
+    vTNormal = NMatrix * aNormal;
+    
+}
+</script>
+
+
+<!-- Code below is the fragment-shader -------------------- -->
+<script id="fragment-shader" type="x-shader/x-fragment">
+
+precision mediump float;
+
+varying vec2 vTexCoord;
+varying vec3 vTNormal;
+varying vec4 vPosition;
+
+uniform vec3 uAmbientColor;
+uniform vec3 uLightPosition;
+uniform vec3 uDiffuseLightColor;
+uniform vec3 uSpecularLightColor;
+uniform float uShininess;
+
+void
+main()
+{
+	// Light
+	vec3 phongLight;
+    vec3 lightDirection = normalize(uLightPosition - vPosition.xyz);
+	float diffuseLightReflection = max(dot(normalize(vTNormal), lightDirection), 0.0);
+    phongLight = uAmbientColor + uLightColor * diffuseLightReflection;
+
+    // Final color
+    vec4 fragmentColor = vec4(0.2, 0.2, 0.2, 1.0);
+    gl_FragColor = vec4(fragmentColor.rgb * phongLight, fragmentColor.a);
+     
+}
+</script>
+
+<script type="text/javascript" src="../Common/webgl-utils.js"></script>
+<script type="text/javascript" src="../Common/initShaders.js"></script>
+<script type="text/javascript" src="../Common/MV.js"></script>
+<script type="text/javascript" src="Assign5.js"></script>
+<script type="text/javascript" src="modelData.js"></script>
+
+</head>
+
+<body>
+<canvas id="gl-canvas" width="512" height="512">
+Oops ... your browser doesn't support the HTML5 canvas element
+</canvas>
+</body>
+</html>
