@@ -2,19 +2,35 @@
 // meshData.js
 // This file contains functions for producing the vertex positions, texture 
 // coordinates, and vertex normals for a cylinder and a square pyramid. The global 
-// variables for the meshes are located in the main Assign5.js file.
+// variables for the meshes are cylinderMesh, cubeMesh, and squareMesh. (Note that a 
+// cube is just a cylinder with a sample of 4). 
 //-------------------------------------------------------------------------------------
 
+//-------------------------------------------------------------------------------------
+// Globals
+//-------------------------------------------------------------------------------------
+var cylinderMesh;
+var cubeMesh;
+var squarePyramidMesh;
+var groundPlaneMesh;
 
 //-------------------------------------------------------------------------------------
 function generateGeometry() {
     
-    cylinderMesh = generateCylinderGeometry(sample); // pass in sample
+    cylinderMesh = generateCylinderGeometry(30); // pass in sample
     cylinderMesh.params = {
         materialShininess: 12.8,
         itemSize: 3,
-        numItems: sample*12,
+        numItems: 360,
         drawMethod: gl.TRIANGLES
+    };
+
+    cubeMesh = generateCylinderGeometry(4);
+    cubeMesh.params = {
+		materialShininess: 12.8,
+		itemSize: 3,
+		numItems: 48,
+		drawMethod: gl.TRIANGLES
     };
 
     squarePyramidMesh = generateSquarePyramidGeometry();
@@ -24,17 +40,26 @@ function generateGeometry() {
         numItems: 24,
         drawMethod: gl.TRIANGLES
     };
+
+    groundPlaneMesh = generateGroundPlaneGeometry(10, 10, true);
+    groundPlaneMesh.params = {
+		materialShininess: 2.0,
+		itemSize: 3,
+		numItems: 600,
+		drawMethod: gl.TRIANGLES
+    };
 }
 
 //-------------------------------------------------------------------------------------
-// TARA: radius = 1, height = 1
+// generateCylinderGeometry()
+// radius = 1, height = 1
 // The purpose of altering this method from the previous assignment is to be
 // able to use matrices to alter the look of a cylinder rather than redefine 
 // the geometry every time. This way, only one cylinder is passed to the graphics
 // card but it can be used multiple times with transformation matrices
 //-------------------------------------------------------------------------------------
 function generateCylinderGeometry(sample) {
-	var cylinderMesh={vertices:[],texCoords:[], normals:[]};
+	var cylinderMesh={vertices:[],texCoords:[],normals:[]};
 	var i;
 	for (i = 0; i < sample; i++) {
 		// TARA: setup the angles (in radians) to be used (I need two of them per sliver 
@@ -100,8 +125,9 @@ function generateCylinderGeometry(sample) {
     return cylinderMesh;
 }
 
+//-------------------------------------------------------------------------------------
 function generateSquarePyramidGeometry() {
-	var squarePyramidMesh={vertices:[],texCoords:[], normals:[]};
+	var squarePyramidMesh={vertices:[],texCoords:[],normals:[]};
 	// TARA: start with the vertex positions. I'm not sure how to define them procedurally, so I'm doing
 	// it explicitly
 	squarePyramidMesh.vertices = [
@@ -201,4 +227,66 @@ function generateSquarePyramidGeometry() {
 	];
 
 	return squarePyramidMesh;
+}
+
+//-------------------------------------------------------------------------------------
+function generateGroundPlaneGeometry(width, height, uniform) {
+	// TARA: Procedurally generating the vertex coordinates of the ground mesh...
+	// I am building a mesh of triangles in which the x coordinates vary from
+	// [-1,1] and the y coordinates vary from [-1,1], with a step of 2/width and 2/height, 
+	// respectively. 
+	var groundMesh={vertices:[],texCoords:[],normals:[]};
+	var i,j;
+	var positions=[];
+	for(j = -1; j <= 1; j+=(2/height)){
+		for(i = -1; i <= 1; i+=(2/width)){
+			positions.push(vec3(i,j,0));
+		}
+	}
+	// TARA: There will be a total of (width+1)*(height+1) vertices. 
+	// Vary i here from 0 to (width+1)*height because each vertex in the final column is 
+	// skipped and it must iterate width*height times.
+	var rowSkip = width;
+	var iterations = (width+1)*height; // So it's only computed once
+	for(i = 0; i < iterations; i++){
+		if (i==rowSkip) {
+			rowSkip+=(width+1);
+			continue;
+		}
+		groundMesh.vertices.push(positions[i]);
+		groundMesh.vertices.push(positions[i+1]);
+		groundMesh.vertices.push(positions[i+4+1]);
+		groundMesh.vertices.push(positions[i+1]);
+		groundMesh.vertices.push(positions[i+4+2]);
+		groundMesh.vertices.push(positions[i+4+1]);
+	}
+	// TARA: there are a total of 2*width*height triangles, with 3 vertices each,
+	// each needing a set of texture coordinates, thus 6*widht*height texture coords.
+	// Texture coordinates will depend of whether the texture is uniform or "patterned"
+	// (i.e. each square in the plane gets its own texture)
+	if (uniform) {
+		for(j = 0; j <= 1; j+=(1/height)){
+			for(i = 0; i <= 1; i+=(1/width)){
+				groundMesh.texCoords.push(vec2(i,j));
+			}
+		}
+	} else {
+		iterations = width*height;
+		for (i = 0; i < iterations; i++) {
+			groundMesh.texCoords.push(vec2(0,0));
+			groundMesh.texCoords.push(vec2(1,0));
+			groundMesh.texCoords.push(vec2(0,1));
+			groundMesh.texCoords.push(vec2(1,0));
+			groundMesh.texCoords.push(vec2(1,1));
+			groundMesh.texCoords.push(vec2(0,1));
+		}
+	}
+
+	// TARA: Finally, the normal vectors, which just always point "up."
+	iterations*=6; // there are 6*width*height vertices
+	for (i = 0; i < iterations; i++) {
+		groundMesh.normals.push(vec3(0,0,1));
+	}
+
+    return groundMesh;
 }
