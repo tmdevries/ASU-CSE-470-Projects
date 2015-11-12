@@ -1,3 +1,30 @@
+//-------------------------------------------------------------------------------------
+// meshData.js
+// This file contains functions for producing the vertex positions, texture 
+// coordinates, and vertex normals for a cylinder and a square pyramid. The global 
+// variables for the meshes are located in the main Assign5.js file.
+//-------------------------------------------------------------------------------------
+
+
+//-------------------------------------------------------------------------------------
+function generateGeometry() {
+    
+    cylinderMesh = generateCylinderGeometry(sample); // pass in sample
+    cylinderMesh.params = {
+        materialShininess: 12.8,
+        itemSize: 3,
+        numItems: sample*12,
+        drawMethod: gl.TRIANGLES
+    };
+
+    squarePyramidMesh = generateSquarePyramidGeometry();
+    squarePyramidMesh.params = {
+        materialShininess: 12.8,
+        itemSize: 3,
+        numItems: 24,
+        drawMethod: gl.TRIANGLES
+    };
+}
 
 //-------------------------------------------------------------------------------------
 // TARA: radius = 1, height = 1
