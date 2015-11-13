@@ -16,38 +16,34 @@ var groundPlaneMesh;
 
 //-------------------------------------------------------------------------------------
 function generateGeometry() {
-    
-    cylinderMesh = generateCylinderGeometry(30); // pass in sample
-    cylinderMesh.params = {
-        materialShininess: 12.8,
-        itemSize: 3,
-        numItems: 360,
-        drawMethod: gl.TRIANGLES
-    };
-
-    cubeMesh = generateCylinderGeometry(4);
-    cubeMesh.params = {
-		materialShininess: 12.8,
+	
+	cylinderMesh = generateCylinderGeometry(30); // pass in sample
+	cylinderMesh.params = {
 		itemSize: 3,
-		numItems: 48,
+		numItems: 360,
 		drawMethod: gl.TRIANGLES
-    };
+	};
 
-    squarePyramidMesh = generateSquarePyramidGeometry();
-    squarePyramidMesh.params = {
-        materialShininess: 12.8,
-        itemSize: 3,
-        numItems: 24,
-        drawMethod: gl.TRIANGLES
-    };
+	cubeMesh = generateCubeGeometry();
+	cubeMesh.params = {
+		itemSize: 3,
+		numItems: 36,
+		drawMethod: gl.TRIANGLES
+	};
 
-    groundPlaneMesh = generateGroundPlaneGeometry(10, 10, true);
-    groundPlaneMesh.params = {
-		materialShininess: 2.0,
+	squarePyramidMesh = generateSquarePyramidGeometry();
+	squarePyramidMesh.params = {
+		itemSize: 3,
+		numItems: 24,
+		drawMethod: gl.TRIANGLES
+	};
+
+	groundPlaneMesh = generateGroundPlaneGeometry(10, 10, true);
+	groundPlaneMesh.params = {
 		itemSize: 3,
 		numItems: 600,
 		drawMethod: gl.TRIANGLES
-    };
+	};
 }
 
 //-------------------------------------------------------------------------------------
@@ -121,8 +117,159 @@ function generateCylinderGeometry(sample) {
 		cylinderMesh.normals.push(subtract(vec3(Math.cos(angle_1), Math.sin(angle_1), 0), vec3(0,0,0)));
 		cylinderMesh.normals.push(subtract(vec3(Math.cos(angle_2), Math.sin(angle_2), 0), vec3(0,0,0)));
 		
-    }
-    return cylinderMesh;
+	}
+	return cylinderMesh;
+}
+
+//-------------------------------------------------------------------------------------
+// generateCubeGeometry()
+// TARA: I originally intended to repurpose the cylinder mesh as a cube mesh by passing
+// 4 as the sample, but then scale the x, y, and z coordinates the way I wanted did not
+// work as expected. So, I went ahead and did the extra work of defining a cube 
+// explicitly.
+//-------------------------------------------------------------------------------------
+function generateCubeGeometry() {
+	var cubeMesh={vertices:[],texCoords:[],normals:[]};
+	// TARA: Vertex positions (I tried to make them all clockwise)
+	cubeMesh.vertices = [
+		// Front face
+		vec3( 1,  1, 1),
+		vec3( 1, -1, 1),
+		vec3(-1, -1, 1),
+		vec3( 1,  1, 1),
+		vec3(-1, -1, 1),
+		vec3(-1,  1, 1),
+		// Back face
+		vec3(-1, -1, -1),
+		vec3(-1,  1, -1),
+		vec3( 1,  1, -1),
+		vec3(-1, -1, -1),
+		vec3( 1,  1, -1),
+		vec3( 1, -1, -1),
+		// Top face
+		vec3(-1,  1, -1),
+		vec3( 1,  1,  1),
+		vec3(-1,  1,  1),
+		vec3( 1,  1, -1),
+		vec3(-1,  1, -1),
+		vec3( 1,  1,  1),
+		// Bottom face
+		vec3(-1, -1, -1),
+		vec3( 1, -1, -1),
+		vec3( 1, -1,  1),
+		vec3(-1, -1,  1),
+		vec3(-1, -1, -1),
+		vec3( 1, -1,  1),
+		// Right face
+		vec3( 1, -1, -1),
+		vec3( 1,  1, -1),
+		vec3( 1,  1,  1),
+		vec3( 1, -1,  1),
+		vec3( 1, -1, -1),
+		vec3( 1,  1,  1),
+		// Left face
+		vec3(-1, -1, -1),
+		vec3(-1,  1,  1),
+		vec3(-1, -1,  1),
+		vec3(-1,  1, -1),
+		vec3(-1, -1, -1),
+		vec3(-1,  1,  1)
+	];
+	// TARA: Ignore the coordinates that are all the same throughout the vertices of a face
+	// and then make -1 a 0. (E.g. for front face all z coordinates are 1, ignore them)
+	cubeMesh.texCoords = [
+		// Front face
+		vec2(1,1),
+		vec2(1,0),
+		vec2(0,0),
+		vec2(0,0),
+		vec2(1,1),
+		vec2(0,1),
+		// Back face
+		vec2(0,0),
+		vec2(0,1),
+		vec2(1,1),
+		vec2(0,0),
+		vec2(1,1),
+		vec2(1,0),
+		// Top face
+		vec2(0,0),
+		vec2(1,1),
+		vec2(0,1),
+		vec2(1,0),
+		vec2(0,0),
+		vec2(1,1),
+		// Bottom face
+		vec2(0,0),
+		vec2(1,0),
+		vec2(1,1),
+		vec2(0,1),
+		vec2(0,0),
+		vec2(1,1),
+		// Right face
+		vec2(0,0),
+		vec2(1,0),
+		vec2(1,1),
+		vec2(0,1),
+		vec2(0,0),
+		vec2(1,1),
+		// Left face
+		vec2(0,0),
+		vec2(1,1),
+		vec2(0,1),
+		vec2(1,0),
+		vec2(0,0),
+		vec2(1,1)
+	];
+	// TARA: Finally, the normals. Do the opposite as for texture coordinates. Focus
+	// on the ones that are the same and then make the others 0. (E.g. for front face,
+	// since all z coordinates are 1, the normal vector will be (0,0,1) for all vertices)
+	cubeMesh.normals = [
+		// Front face
+		vec3(0,0,1),
+		vec3(0,0,1),
+		vec3(0,0,1),
+		vec3(0,0,1),
+		vec3(0,0,1),
+		vec3(0,0,1),
+		// Back face
+		vec3(0,0,-1),
+		vec3(0,0,-1),
+		vec3(0,0,-1),
+		vec3(0,0,-1),
+		vec3(0,0,-1),
+		vec3(0,0,-1),
+		// Top face
+		vec3(0,1,0),
+		vec3(0,1,0),
+		vec3(0,1,0),
+		vec3(0,1,0),
+		vec3(0,1,0),
+		vec3(0,1,0),
+		// Bottom face
+		vec3(0,-1,0),
+		vec3(0,-1,0),
+		vec3(0,-1,0),
+		vec3(0,-1,0),
+		vec3(0,-1,0),
+		vec3(0,-1,0),
+		// Right face
+		vec3(1,0,0),
+		vec3(1,0,0),
+		vec3(1,0,0),
+		vec3(1,0,0),
+		vec3(1,0,0),
+		vec3(1,0,0),
+		// Left face
+		vec3(-1,0,0),
+		vec3(-1,0,0),
+		vec3(-1,0,0),
+		vec3(-1,0,0),
+		vec3(-1,0,0),
+		vec3(-1,0,0)
+	];
+
+	return cubeMesh;
 }
 
 //-------------------------------------------------------------------------------------
@@ -132,98 +279,98 @@ function generateSquarePyramidGeometry() {
 	// it explicitly
 	squarePyramidMesh.vertices = [
 		// Base
-		vec3( -1, -1, 0),
-		vec3( -1,  1, 0),
-		vec3(  1, -1, 0),
-		vec3( -1,  1, 0),
-		vec3(  1, -1, 0),
-		vec3(  1,  1, 0),
+		vec3(-1, 0, -1),
+		vec3( 1, 0, -1),
+		vec3( 1, 0,  1),
+		vec3(-1, 0, -1),
+		vec3( 1, 0,  1),
+		vec3(-1, 0,  1),
 		// "Left" panel
-		vec3( -1, -1, 0),
-		vec3( -1,  1, 0),
-		vec3(  0,  1, 1),
-		vec3( -1, -1, 0),
-		vec3(  0,  1, 1),
-		vec3(  0, -1, 1),
+		vec3( 0, 1, -1),
+		vec3( 0, 1,  1),
+		vec3(-1, 0,  1),
+		vec3( 0, 1, -1),
+		vec3(-1, 0,  1),
+		vec3(-1, 0, -1),
 		// "Right" panel
-		vec3(  1, -1, 0),
-		vec3(  1,  1, 0),
-		vec3(  0, -1, 1),
-		vec3(  1,  1, 0),
-		vec3(  0, -1, 1),
-		vec3(  0,  1, 1),
+		vec3( 0, 1, -1),
+		vec3( 0, 1,  1),
+		vec3( 1, 0,  1),
+		vec3( 0, 1, -1),
+		vec3( 1, 0,  1),
+		vec3( 1, 0, -1),
 		// "Back" face
-		vec3( -1,  1, 0),
-		vec3(  1,  1, 0),
-		vec3(  0,  1, 1),
+		vec3( 0, 1, -1),
+		vec3(-1, 0, -1),
+		vec3( 1, 0, -1),
 		// "Front" face
-		vec3(  1, -1, 0),
-		vec3( -1, -1, 0),
-		vec3(  0, -1, 1)
+		vec3( 0, 1,  1),
+		vec3(-1, 0,  1),
+		vec3( 1, 0,  1)
 	];
 
 	squarePyramidMesh.texCoords = [
 		// Base
 		vec2(0,0),
-		vec2(0,1),
-		vec2(1,0),
-		vec2(0,1),
 		vec2(1,0),
 		vec2(1,1),
+		vec2(0,0),
+		vec2(1,1),
+		vec2(0,1),
 		// "Left" panel
-		vec2(0,0),
 		vec2(0,1),
-		vec2(1,0),
-		vec2(0,1),
-		vec2(1,0),
 		vec2(1,1),
+		vec2(1,0),
+		vec2(0,1),
+		vec2(1,0),
+		vec2(0,0),
 		// "Right" panel
-		vec2(0,0),
-		vec2(0,1),
-		vec2(1,0),
-		vec2(0,1),
-		vec2(1,0),
 		vec2(1,1),
+		vec2(0,1),
+		vec2(0,0),
+		vec2(1,1),
+		vec2(0,0),
+		vec2(1,0),
 		// "Back" face
-		vec2(0,0),
-		vec2(1,0),
 		vec2(0.5,1),
-		// "Front" face
 		vec2(0,0),
 		vec2(1,0),
-		vec2(0.5,1)
+		// "Front" face
+		vec2(0.5,1),
+		vec2(0,0),
+		vec2(1,0)
 	];
 
 	squarePyramidMesh.normals = [
 		// Base
-		vec3(0,0,-1),
-		vec3(0,0,-1),
-		vec3(0,0,-1),
-		vec3(0,0,-1),
-		vec3(0,0,-1),
-		vec3(0,0,-1),
+		vec3(0,-1,0),
+		vec3(0,-1,0),
+		vec3(0,-1,0),
+		vec3(0,-1,0),
+		vec3(0,-1,0),
+		vec3(0,-1,0),
 		// "Left" panel
-		vec3(-1,0,0),
-		vec3(-1,0,0),
-		vec3(-1,0,0),
-		vec3(-1,0,0),
-		vec3(-1,0,0),
-		vec3(-1,0,0),
+		vec3(-1,1,0),
+		vec3(-1,1,0),
+		vec3(-1,1,0),
+		vec3(-1,1,0),
+		vec3(-1,1,0),
+		vec3(-1,1,0),
 		// "Right" panel
-		vec3(1,0,0),
-		vec3(1,0,0),
-		vec3(1,0,0),
-		vec3(1,0,0),
-		vec3(1,0,0),
-		vec3(1,0,0),
+		vec3(1,1,0),
+		vec3(1,1,0),
+		vec3(1,1,0),
+		vec3(1,1,0),
+		vec3(1,1,0),
+		vec3(1,1,0),
 		// "Back" face
-		vec3(0,-1,0),
-		vec3(0,-1,0),
-		vec3(0,-1,0),
+		vec3(0,0,-1),
+		vec3(0,0,-1),
+		vec3(0,0,-1),
 		// "Front" face
-		vec3(0,1,0),
-		vec3(0,1,0),
-		vec3(0,1,0),
+		vec3(0,0,1),
+		vec3(0,0,1),
+		vec3(0,0,1)
 	];
 
 	return squarePyramidMesh;
@@ -243,9 +390,10 @@ function generateGroundPlaneGeometry(width, height, uniform) {
 			positions.push(vec3(i,j,0));
 		}
 	}
+
 	// TARA: There will be a total of (width+1)*(height+1) vertices. 
-	// Vary i here from 0 to (width+1)*height because each vertex in the final column is 
-	// skipped and it must iterate width*height times.
+	// Vary i here from 0 to (width+1)*height because each vertex in the final column as  
+	// well as the entire final row are skipped and it must iterate width*height times.
 	var rowSkip = width;
 	var iterations = (width+1)*height; // So it's only computed once
 	for(i = 0; i < iterations; i++){
@@ -255,19 +403,25 @@ function generateGroundPlaneGeometry(width, height, uniform) {
 		}
 		groundMesh.vertices.push(positions[i]);
 		groundMesh.vertices.push(positions[i+1]);
-		groundMesh.vertices.push(positions[i+4+1]);
+		groundMesh.vertices.push(positions[i+width+1]);
 		groundMesh.vertices.push(positions[i+1]);
-		groundMesh.vertices.push(positions[i+4+2]);
-		groundMesh.vertices.push(positions[i+4+1]);
+		groundMesh.vertices.push(positions[i+width+2]);
+		groundMesh.vertices.push(positions[i+width+1]);
 	}
+
 	// TARA: there are a total of 2*width*height triangles, with 3 vertices each,
 	// each needing a set of texture coordinates, thus 6*widht*height texture coords.
 	// Texture coordinates will depend of whether the texture is uniform or "patterned"
 	// (i.e. each square in the plane gets its own texture)
 	if (uniform) {
-		for(j = 0; j <= 1; j+=(1/height)){
-			for(i = 0; i <= 1; i+=(1/width)){
-				groundMesh.texCoords.push(vec2(i,j));
+		for(j = 0; j < height; j++){
+			for(i = 0; i < width; i++){
+				groundMesh.texCoords.push(vec2(i/(width+1),j/(height+1)));
+				groundMesh.texCoords.push(vec2((i+1)/(width+1),j/(height+1)));
+				groundMesh.texCoords.push(vec2(i/(width+1),(j+1)/(height+1)));
+				groundMesh.texCoords.push(vec2((i+1)/(width+1),j/(height+1)));
+				groundMesh.texCoords.push(vec2((i+1)/(width+1),(j+1)/(height+1)));
+				groundMesh.texCoords.push(vec2(i/(width+1),(j+1)/(height+1)));
 			}
 		}
 	} else {
@@ -281,12 +435,12 @@ function generateGroundPlaneGeometry(width, height, uniform) {
 			groundMesh.texCoords.push(vec2(0,1));
 		}
 	}
-
+	
 	// TARA: Finally, the normal vectors, which just always point "up."
 	iterations*=6; // there are 6*width*height vertices
 	for (i = 0; i < iterations; i++) {
 		groundMesh.normals.push(vec3(0,0,1));
 	}
 
-    return groundMesh;
+	return groundMesh;
 }

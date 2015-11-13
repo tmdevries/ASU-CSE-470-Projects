@@ -8,21 +8,7 @@
 //-------------------------------------------------------------------------------------
 // Global Variables
 //-------------------------------------------------------------------------------------
-var nyanCat = {
-	child: [],
-	geometry: cubeMesh,
-	color: vec4(0.98, 0.8, 0.62, 1.0),
-	materialShininess: 12.8,
-	mvParams: {
-		scaleFactorX: 0.3,
-		scaleFactorY: 0.3,
-		scaleFactorZ: 0.5,
-		rotateTheta: 0.0,
-		dX: 0.0,
-		dY: 0.0,
-		dZ: 0.0
-	}
-};
+var nyanCat;
 
 var groundPlane = {
 	child: null,
@@ -45,74 +31,176 @@ var groundPlane = {
 
 //-------------------------------------------------------------------------------------
 function createNyanCat() {
+	nyanCat = {
+		child: [],
+		geometry: cubeMesh,
+		useTextures: true,
+		color: vec4(0.98, 0.8, 0.62, 1.0),
+		materialShininess: 12.8,
+		mvParams: {
+			scaleFactorX: 0.05,
+			scaleFactorY: 0.5,
+			scaleFactorZ: 0.35,
+			rotateX: 0,
+			rotateY: 0,
+			rotateZ: 0,
+			dX: 0.0,
+			dY: 0.0,
+			dZ: 0.0
+		}
+	};
 	// Nyan Cat's Head
 	nyanCat.child.push({
-		child: [ear1, ear2],
+		child: [],
 		geometry: cylinderMesh,
+		useTextures: true,
 		color: vec4(0.6, 0.6, 0.6, 1.0),
 		materialShininess: nyanCat.materialShininess,
 		mvParams: {
 			scaleFactorX: 0.3,
-			scaleFactorY: 0.3,
-			scaleFactorZ: 0.5,
-			rotateTheta: 0.0,
+			scaleFactorY: 0.25,
+			scaleFactorZ: 0.1,
+			rotateX: 90,
+			rotateY: 0,
+			rotateZ: 0,
 			dX: 0.0,
-			dY: 0.0,
-			dZ: 0.0
+			dY: 0.6,
+			dZ: -0.15
+		},
+	});
+	
+	// 2 Ears
+	nyanCat.child[0].child.push({
+		child: null,
+		geometry: squarePyramidMesh,
+		useTextures: false,
+		color: vec4(0.6, 0.6, 0.6, 1.0),
+		materialShininess: nyanCat.materialShininess,
+		mvParams: {
+			scaleFactorX: 0.17,
+			scaleFactorY: 0.25,
+			scaleFactorZ: 0.05,
+			rotateX: 90,
+			rotateY: 44,
+			rotateZ: 0,
+			dX: 0.15,
+			dY: 0.55,
+			dZ: -0.05
+		},
+	});
+	
+	nyanCat.child[0].child.push({
+		child: null,
+		geometry: squarePyramidMesh,
+		useTextures: false,
+		color: vec4(0.6, 0.6, 0.6, 1.0),
+		materialShininess: nyanCat.materialShininess,
+		mvParams: {
+			scaleFactorX: 0.17,
+			scaleFactorY: 0.25,
+			scaleFactorZ: 0.05,
+			rotateX: 90,
+			rotateY: -44,
+			rotateZ: 0,
+			dX: -0.15,
+			dY: 0.55,
+			dZ: -0.05
 		},
 	});
 
-	// 2 Ears
-	for (var i = 1; i <= 2; i++) {
-		nyanCat.child[0].child.push({
-			child: null,
-			geometry: squarePyramidMesh,
-			color: vec4(0.6, 0.6, 0.6, 1.0),
-			materialShininess: nyanCat.materialShininess,
-			mvParams: {
-				scaleFactorX: 0.3,
-				scaleFactorY: 0.3,
-				scaleFactorZ: 0.5,
-				rotateTheta: 0.0,
-				dX: 0.0,
-				dY: 0.0,
-				dZ: 0.0
-			},
-		});
-	}
-
 	// 4 Legs
-	for (i = 1; i <= 4; i++) {
-		nyanCat.child.push({
-			child: null,
-			geometry: cylinderMesh,
-			color: vec4(0.6, 0.6, 0.6, 1.0),
-			materialShininess: nyanCat.materialShininess,
-			dmvParams: {
-				scaleFactorX: 0.3,
-				scaleFactorY: 0.3,
-				scaleFactorZ: 0.5,
-				rotateTheta: 0.0,
-				dX: 0.0,
-				dY: 0.0,
-				dZ: 0.0
-			},
-		});
-	}
+	nyanCat.child.push({
+		child: null,
+		geometry: cylinderMesh,
+		useTextures: false,
+		color: vec4(0.6, 0.6, 0.6, 1.0),
+		materialShininess: nyanCat.materialShininess,
+		mvParams: {
+			scaleFactorX: 0.07,
+			scaleFactorY: 0.07,
+			scaleFactorZ: 0.25,
+			rotateX: 0,
+			rotateY: 0,
+			rotateZ: 0,
+			dX: 0.118,
+			dY: 0.35,
+			dZ: -0.5
+		},
+	});
+
+	nyanCat.child.push({
+		child: null,
+		geometry: cylinderMesh,
+		useTextures: false,
+		color: vec4(0.6, 0.6, 0.6, 1.0),
+		materialShininess: nyanCat.materialShininess,
+		mvParams: {
+			scaleFactorX: 0.07,
+			scaleFactorY: 0.07,
+			scaleFactorZ: 0.25,
+			rotateX: 0,
+			rotateY: 0,
+			rotateZ: 0,
+			dX: -0.118,
+			dY: 0.35,
+			dZ: -0.5
+		},
+	});
+
+	nyanCat.child.push({
+		child: null,
+		geometry: cylinderMesh,
+		useTextures: false,
+		color: vec4(0.6, 0.6, 0.6, 1.0),
+		materialShininess: nyanCat.materialShininess,
+		mvParams: {
+			scaleFactorX: 0.07,
+			scaleFactorY: 0.07,
+			scaleFactorZ: 0.25,
+			rotateX: 0,
+			rotateY: 0,
+			rotateZ: 0,
+			dX: 0.118,
+			dY: -0.35,
+			dZ: -0.5
+		},
+	});
+
+	nyanCat.child.push({
+		child: null,
+		geometry: cylinderMesh,
+		useTextures: false,
+		color: vec4(0.6, 0.6, 0.6, 1.0),
+		materialShininess: nyanCat.materialShininess,
+		mvParams: {
+			scaleFactorX: 0.07,
+			scaleFactorY: 0.07,
+			scaleFactorZ: 0.25,
+			rotateX: 0,
+			rotateY: 0,
+			rotateZ: 0,
+			dX: -0.118,
+			dY: -0.35,
+			dZ: -0.5
+		},
+	});
 
 	// Nyan Cat's Tail
 	nyanCat.child.push({
 		child: null,
 		geometry: cylinderMesh,
+		useTextures: false,
 		color: vec4(0.6, 0.6, 0.6, 1.0),
 		materialShininess: nyanCat.materialShininess,
 		mvParams: {
-			scaleFactorX: 0.3,
-			scaleFactorY: 0.3,
+			scaleFactorX: 0.05,
+			scaleFactorY: 0.05,
 			scaleFactorZ: 0.5,
-			rotateTheta: 0.0,
+			rotateX: 20,
+			rotateY: 0,
+			rotateZ: 0,
 			dX: 0.0,
-			dY: 0.0,
+			dY: -0.5,
 			dZ: 0.0
 		},
 	});

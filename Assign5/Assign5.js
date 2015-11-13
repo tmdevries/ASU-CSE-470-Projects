@@ -26,6 +26,7 @@ window.onload = function init()
     // meshData.js contains functions which will procedurally generate the mesh data for all of
     // my geometry
     generateGeometry();
+    createNyanCat();
 
     render();
 };
@@ -56,17 +57,38 @@ function attributeBuffersInit() {
     shaderProgram.specularColorUniform = gl.getUniformLocation(shaderProgram, "uSpecularColor");
     shaderProgram.specularShininessUniform = gl.getUniformLocation(shaderProgram, "uShininess");
     shaderProgram.ambientColorUniform = gl.getUniformLocation(shaderProgram, "uAmbientColor");
+    shaderProgram.colorUniform = gl.getUniformLocation(shaderProgram, "uColor");
 }
 
 //------------------------------------------------------------
 function render() {
 
     gl.clear( gl.COLOR_BUFFER_BIT );
-
-    //draw(cylinderMesh, cylinderMeshParams);
-    draw(squarePyramidMesh);
+    /*var object = {
+        child: null,
+        color: vec4(),
+        materialShininess: 0.0,
+        geometry:cubeMesh
+    };
+    object.color = vec4( 0.09, 0.32, 0.55, 1.0);
+    object.materialShininess = 12.8;
+    object.mvParams = {
+        scaleFactorX: 0.4,
+        scaleFactorY: 0.4,
+        scaleFactorZ: 0.4,
+        rotateX: 90,
+        rotateY: 0,
+        rotateZ: 0,
+        dX: 0.0,
+        dY: 0.0,
+        dZ: 0.0
+    };
+    object.geometry = squarePyramidMesh;
+    //object.geometry = cylinderMesh;
+    
+    draw(object);*/
     //animate(nyanCat);
-    //draw(nyanCat);
+    draw(nyanCat);
     //draw(groundPlane);
     
     window.requestAnimFrame(render);

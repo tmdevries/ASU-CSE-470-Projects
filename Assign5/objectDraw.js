@@ -15,9 +15,9 @@ var triangleNormalVectorBuffer;
 // Model-View
 var modelView;
 var mvParams = {
-        scaleFactorX: 0.3,
-        scaleFactorY: 0.3,
-        scaleFactorZ: 0.5,
+        scaleFactorX: 0.7,
+        scaleFactorY: 0.7,
+        scaleFactorZ: 0.7,
         rotateTheta: 0.0,
         dX: 0.0,
         dY: 0.0,
@@ -28,8 +28,8 @@ var mvParams = {
 var projection;
 var lpParams = {
     step: 0, // TARA: for rotation
-    stepMax: 600,
-    eye: vec3( 0.0 , -2.0 , 2.0 ), // TARA: position of the camera
+    stepMax: 10000,
+    eye: vec3( 0.0 , 1.0 , 1.0 ), // TARA: position of the camera
     at: vec3( 0, 0, 0 ), // TARA: what point the camera is looking at
     up: vec3( 0, 0, 1 ), // TARA: Vector that tells the camera which way it's oriented. Eg. -1 for y makes the world look up-side down
     pMatrix: perspective( 45, 1.0, 0.1, 100 )
@@ -37,25 +37,28 @@ var lpParams = {
 
 // Lighting
 var lighting = {
-    lightPosition: vec3( 10.0, 10.0, 10.0 ),
-    ambientColor: vec3( 0.135, 0.2225, 0.1575 ),
-    diffuseColor: vec3( 0.54, 0.89, 0.63 ),
-    specularColor: vec3( 0.316228, 0.316228, 0.316228 )
+    lightPosition: vec3( 0.0, 1.0, -0.2 ),
+    ambientColor: vec3( 0.3, 0.3, 0.3 ),
+    diffuseColor: vec3( 0.8, 0.8, 0.8 ),
+    specularColor: vec3( 0.3, 0.3, 0.3 )
 };
 
 
 //-------------------------------------------------------------------------------------
-function draw(mesh) {
-    prepBuffer(mesh);
+function draw(object) {
+    prepBuffer(object.geometry);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);
-    gl.vertexAttribPointer( shaderProgram.vertexPositionAttribute, mesh.params.itemSize, gl.FLOAT, false, 0, 0 );
+    gl.vertexAttribPointer( shaderProgram.vertexPositionAttribute, object.geometry.params.itemSize, gl.FLOAT, false, 0, 0 );
     
     // TARA: Create the transformations for the modelView. I chose a position in which you can clearly
     // see the ground plane and cylinder. It is global so that I can easily change this value without
     // having to search through code
-    modelView = mult(scalem(mvParams.scaleFactorX,mvParams.scaleFactorY,mvParams.scaleFactorZ),mat4());
-    modelView = mult(translate(mvParams.dX,mvParams.dY,mvParams.dZ), modelView);
+    modelView = mult(scalem(object.mvParams.scaleFactorX,object.mvParams.scaleFactorY,object.mvParams.scaleFactorZ), mat4());
+    modelView = mult(rotate(object.mvParams.rotateX,[1,0,0]), modelView);
+    modelView = mult(rotate(object.mvParams.rotateY,[0,1,0]), modelView);
+    modelView = mult(rotate(object.mvParams.rotateZ,[0,0,1]), modelView);
+    modelView = mult(translate(object.mvParams.dX,object.mvParams.dY,object.mvParams.dZ), modelView);
 
     gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, flatten(modelView));
 
@@ -65,7 +68,7 @@ function draw(mesh) {
     gl.uniformMatrix3fv(shaderProgram.normalMatrixUniform, false, flatten(normalMatrix(modelView, 1)));
 
     // TARA: Now, prepare the projection matrix
-    //rotateCamera();
+    rotateCamera();
     projection = mult(lpParams.pMatrix, lookAt(lpParams.eye, lpParams.at, lpParams.up)); // TARA: multiply look first
     gl.uniformMatrix4fv(shaderProgram.projectionMatrixUniform, false, flatten(projection));
 
@@ -75,18 +78,24 @@ function draw(mesh) {
     gl.uniform3fv(shaderProgram.diffuseColorUniform, flatten(lighting.diffuseColor));
     gl.uniform3fv(shaderProgram.specularColorUniform, flatten(lighting.specularColor));
     gl.uniform3fv(shaderProgram.ambientColorUniform, flatten(lighting.ambientColor));
-    gl.uniform1f(shaderProgram.specularShininessUniform, mesh.params.materialShininess);
+    gl.uniform1f(shaderProgram.specularShininessUniform, object.materialShininess);
     
     // TARA: Now it's time to load the texture coordinates. The itemSize of this is always 2.
     gl.bindBuffer(gl.ARRAY_BUFFER, triangleTextCoordBuffer);
     gl.vertexAttribPointer( shaderProgram.textureAttribute, 2, gl.FLOAT, false, 0, 0 );
 
+    gl.uniform4fv(shaderProgram.colorUniform, object.color);
+
     // TARA: Last, but not least, pass the normals into the shader
     gl.bindBuffer(gl.ARRAY_BUFFER, triangleNormalVectorBuffer);
     gl.vertexAttribPointer( shaderProgram.normalVectorAttribute, 3, gl.FLOAT, false, 0, 0 );
 
-    gl.drawArrays( mesh.params.drawMethod, 0, mesh.params.numItems );
-
+    gl.drawArrays( object.geometry.params.drawMethod, 0, object.geometry.params.numItems );
+    if(object.child !== null) {
+        for(var i=0; i < object.child.length; i++) {
+            draw(object.child[i]);
+        }
+    }
 }
 
 //------------------------------------------------------------
