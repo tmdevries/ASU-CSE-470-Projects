@@ -3,6 +3,8 @@
 // This file contains global variables and functions for setting up the Nyan Cat model,
 // such as the hierarchical structure, the transformation matrices, colors, textures,
 // etc.
+// Currently only supporting one color per unique object for this project but it will 
+// be easy to use multiple colors by just doing something like what I did for textures.
 //-------------------------------------------------------------------------------------
 
 //-------------------------------------------------------------------------------------
@@ -10,21 +12,7 @@
 //-------------------------------------------------------------------------------------
 var nyanCat;
 
-var groundPlane = {
-	child: null,
-	geometry: groundPlaneMesh,
-	color: vec4(0.09, 0.32, 0.55, 1.0),
-	materialShininess: 2.0,
-	mvParams: {
-		scaleFactorX: 0.3,
-		scaleFactorY: 0.3,
-		scaleFactorZ: 0.5,
-		rotateTheta: 0.0,
-		dX: 0.0,
-		dY: 0.0,
-		dZ: 0.0
-	}
-};
+var groundPlane;
 
 //-------------------------------------------------------------------------------------
 
@@ -34,7 +22,9 @@ function createNyanCat() {
 	nyanCat = {
 		child: [],
 		geometry: cubeMesh,
-		useTextures: true,
+		useTexture: [false, false, false, false, true, false],
+		textureImages: [null, null, null, null, "poptart.png", null],
+		textures: [],
 		color: vec4(0.98, 0.8, 0.62, 1.0),
 		materialShininess: 12.8,
 		mvParams: {
@@ -53,7 +43,9 @@ function createNyanCat() {
 	nyanCat.child.push({
 		child: [],
 		geometry: cylinderMesh,
-		useTextures: true,
+		useTexture: [true, false, false],
+		textureImages: ["face.png", null, null],
+		textures: [],
 		color: vec4(0.6, 0.6, 0.6, 1.0),
 		materialShininess: nyanCat.materialShininess,
 		mvParams: {
@@ -73,7 +65,9 @@ function createNyanCat() {
 	nyanCat.child[0].child.push({
 		child: null,
 		geometry: squarePyramidMesh,
-		useTextures: false,
+		useTexture: [false, false, false, false, false],
+		textureImages: [],
+		textures: [],
 		color: vec4(0.6, 0.6, 0.6, 1.0),
 		materialShininess: nyanCat.materialShininess,
 		mvParams: {
@@ -92,7 +86,9 @@ function createNyanCat() {
 	nyanCat.child[0].child.push({
 		child: null,
 		geometry: squarePyramidMesh,
-		useTextures: false,
+		useTexture: [false, false, false, false, false],
+		textureImages: [],
+		textures: [],
 		color: vec4(0.6, 0.6, 0.6, 1.0),
 		materialShininess: nyanCat.materialShininess,
 		mvParams: {
@@ -112,7 +108,9 @@ function createNyanCat() {
 	nyanCat.child.push({
 		child: null,
 		geometry: cylinderMesh,
-		useTextures: false,
+		useTexture: [false, false, false],
+		textureImages: [],
+		textures: [],
 		color: vec4(0.6, 0.6, 0.6, 1.0),
 		materialShininess: nyanCat.materialShininess,
 		mvParams: {
@@ -131,7 +129,9 @@ function createNyanCat() {
 	nyanCat.child.push({
 		child: null,
 		geometry: cylinderMesh,
-		useTextures: false,
+		useTexture: [false, false, false],
+		textureImages: [],
+		textures: [],
 		color: vec4(0.6, 0.6, 0.6, 1.0),
 		materialShininess: nyanCat.materialShininess,
 		mvParams: {
@@ -150,7 +150,9 @@ function createNyanCat() {
 	nyanCat.child.push({
 		child: null,
 		geometry: cylinderMesh,
-		useTextures: false,
+		useTexture: [false, false, false],
+		textureImages: [],
+		textures: [],
 		color: vec4(0.6, 0.6, 0.6, 1.0),
 		materialShininess: nyanCat.materialShininess,
 		mvParams: {
@@ -169,7 +171,9 @@ function createNyanCat() {
 	nyanCat.child.push({
 		child: null,
 		geometry: cylinderMesh,
-		useTextures: false,
+		useTexture: [false, false, false],
+		textureImages: [],
+		textures: [],
 		color: vec4(0.6, 0.6, 0.6, 1.0),
 		materialShininess: nyanCat.materialShininess,
 		mvParams: {
@@ -189,7 +193,9 @@ function createNyanCat() {
 	nyanCat.child.push({
 		child: null,
 		geometry: cylinderMesh,
-		useTextures: false,
+		useTexture: [false, false, false],
+		textureImages: [],
+		textures: [],
 		color: vec4(0.6, 0.6, 0.6, 1.0),
 		materialShininess: nyanCat.materialShininess,
 		mvParams: {
@@ -204,9 +210,28 @@ function createNyanCat() {
 			dZ: 0.0
 		},
 	});
-
 }
 
-function drawHead() {
-
+//-------------------------------------------------------------------------------------
+function createGroundPlane() {
+	groundPlane = {
+		child: null,
+		geometry: groundPlaneMesh,
+		useTexture: [true],
+		textureImages: ["stars.png"],
+		textures: [],
+		color: vec4(0.09, 0.32, 0.55, 1.0),
+		materialShininess: 2.0,
+		mvParams: {
+			scaleFactorX: 0.8,
+			scaleFactorY: 0.8,
+			scaleFactorZ: 0.8,
+			rotateX: 0,
+			rotateY: 0,
+			rotateZ: 0,
+			dX: 0.0,
+			dY: 0.0,
+			dZ: -0.5
+		}
+	};
 }

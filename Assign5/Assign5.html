@@ -53,7 +53,7 @@ uniform vec3 uSpecularColor;
 uniform float uShininess;
 
 // Textures
-uniform sampler2D textureImg;
+uniform sampler2D uTextureImg;
 uniform vec4 uColor;
 uniform bool uUseTextureImg;
 
@@ -77,7 +77,12 @@ main()
     phongLight = uAmbientColor + uDiffuseColor * diffuseContribution + uSpecularColor * specularContribution;
 
     // Final color
-    vec4 fragmentColor = uColor;
+    vec4 fragmentColor;
+    if (uUseTextureImg) {
+    	fragmentColor = texture2D(uTextureImg, vec2(vTexCoord.s, vTexCoord.t));
+    } else {
+    	fragmentColor = uColor;
+    }
     gl_FragColor = vec4(fragmentColor.rgb * phongLight, fragmentColor.a);
      
 }
@@ -90,6 +95,7 @@ main()
 <script type="text/javascript" src="meshData.js"></script>
 <script type="text/javascript" src="modelData.js"></script>
 <script type="text/javascript" src="objectDraw.js"></script>
+<script type="text/javascript" src="lighting.js"></script>
 
 </head>
 

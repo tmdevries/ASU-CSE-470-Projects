@@ -19,6 +19,7 @@ function generateGeometry() {
 	
 	cylinderMesh = generateCylinderGeometry(30); // pass in sample
 	cylinderMesh.params = {
+		faces: 3,
 		itemSize: 3,
 		numItems: 360,
 		drawMethod: gl.TRIANGLES
@@ -26,6 +27,7 @@ function generateGeometry() {
 
 	cubeMesh = generateCubeGeometry();
 	cubeMesh.params = {
+		faces: 6,
 		itemSize: 3,
 		numItems: 36,
 		drawMethod: gl.TRIANGLES
@@ -33,13 +35,15 @@ function generateGeometry() {
 
 	squarePyramidMesh = generateSquarePyramidGeometry();
 	squarePyramidMesh.params = {
+		faces: 5,
 		itemSize: 3,
 		numItems: 24,
 		drawMethod: gl.TRIANGLES
 	};
 
-	groundPlaneMesh = generateGroundPlaneGeometry(10, 10, true);
+	groundPlaneMesh = generateGroundPlaneGeometry(10, 10, 0);
 	groundPlaneMesh.params = {
+		faces: 1,
 		itemSize: 3,
 		numItems: 600,
 		drawMethod: gl.TRIANGLES
@@ -437,7 +441,7 @@ function generateGroundPlaneGeometry(width, height, uniform) {
 	}
 	
 	// TARA: Finally, the normal vectors, which just always point "up."
-	iterations*=6; // there are 6*width*height vertices
+	iterations = 6*width*height; // there are 6*width*height vertices
 	for (i = 0; i < iterations; i++) {
 		groundMesh.normals.push(vec3(0,0,1));
 	}
