@@ -72,30 +72,8 @@ function initAttributesAndUniforms() {
 function render() {
 
     gl.clear( gl.COLOR_BUFFER_BIT );
-    /*var object = {
-        child: null,
-        color: vec4(),
-        materialShininess: 0.0,
-        geometry:cubeMesh
-    };
-    object.color = vec4( 0.09, 0.32, 0.55, 1.0);
-    object.materialShininess = 12.8;
-    object.mvParams = {
-        scaleFactorX: 0.4,
-        scaleFactorY: 0.4,
-        scaleFactorZ: 0.4,
-        rotateX: 90,
-        rotateY: 0,
-        rotateZ: 0,
-        dX: 0.0,
-        dY: 0.0,
-        dZ: 0.0
-    };
-    object.geometry = squarePyramidMesh;
-    //object.geometry = cylinderMesh;
     
-    draw(object);*/
-    //animate(nyanCat);
+    animate();
     draw(nyanCat);
     draw(groundPlane);
     

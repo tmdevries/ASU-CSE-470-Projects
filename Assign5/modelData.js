@@ -28,15 +28,13 @@ function createNyanCat() {
 		color: vec4(0.98, 0.8, 0.62, 1.0),
 		materialShininess: 12.8,
 		mvParams: {
-			scaleFactorX: 0.05,
-			scaleFactorY: 0.5,
-			scaleFactorZ: 0.35,
-			rotateX: 0,
-			rotateY: 0,
-			rotateZ: 0,
-			dX: 0.0,
-			dY: 0.0,
-			dZ: 0.0
+			scaleFactor: [0.05,0.5,0.35],
+			currentRotation: [0,0,0],
+			currentTranslation: [0,0,0]
+		},
+		animation: {
+			rotationAngle: null,
+			translationDelta: [0,0,0]
 		}
 	};
 	// Nyan Cat's Head
@@ -49,16 +47,14 @@ function createNyanCat() {
 		color: vec4(0.6, 0.6, 0.6, 1.0),
 		materialShininess: nyanCat.materialShininess,
 		mvParams: {
-			scaleFactorX: 0.3,
-			scaleFactorY: 0.25,
-			scaleFactorZ: 0.1,
-			rotateX: 90,
-			rotateY: 0,
-			rotateZ: 0,
-			dX: 0.0,
-			dY: 0.6,
-			dZ: -0.15
+			scaleFactor: [0.3,0.25,0.1],
+			currentRotation: [90,0,0],
+			currentTranslation: [0,0.6,-0.15]
 		},
+		animation: {
+			rotationAngle: null,
+			translationDelta: [0,0,-0.0025]
+		}
 	});
 	
 	// 2 Ears
@@ -71,16 +67,11 @@ function createNyanCat() {
 		color: vec4(0.6, 0.6, 0.6, 1.0),
 		materialShininess: nyanCat.materialShininess,
 		mvParams: {
-			scaleFactorX: 0.17,
-			scaleFactorY: 0.25,
-			scaleFactorZ: 0.05,
-			rotateX: 90,
-			rotateY: 44,
-			rotateZ: 0,
-			dX: 0.15,
-			dY: 0.55,
-			dZ: -0.05
+			scaleFactor: [0.17,0.25,0.05],
+			currentRotation: [90,44,0],
+			currentTranslation: [0.15,0.55,-0.05]
 		},
+		animation: null
 	});
 	
 	nyanCat.child[0].child.push({
@@ -92,16 +83,11 @@ function createNyanCat() {
 		color: vec4(0.6, 0.6, 0.6, 1.0),
 		materialShininess: nyanCat.materialShininess,
 		mvParams: {
-			scaleFactorX: 0.17,
-			scaleFactorY: 0.25,
-			scaleFactorZ: 0.05,
-			rotateX: 90,
-			rotateY: -44,
-			rotateZ: 0,
-			dX: -0.15,
-			dY: 0.55,
-			dZ: -0.05
+			scaleFactor: [0.17,0.25,0.05],
+			currentRotation: [90,-44,0],
+			currentTranslation: [-0.15,0.55,-0.05]
 		},
+		animation: null
 	});
 
 	// 4 Legs
@@ -114,16 +100,14 @@ function createNyanCat() {
 		color: vec4(0.6, 0.6, 0.6, 1.0),
 		materialShininess: nyanCat.materialShininess,
 		mvParams: {
-			scaleFactorX: 0.07,
-			scaleFactorY: 0.07,
-			scaleFactorZ: 0.25,
-			rotateX: 0,
-			rotateY: 0,
-			rotateZ: 0,
-			dX: 0.118,
-			dY: 0.35,
-			dZ: -0.5
+			scaleFactor: [0.07,0.07,0.25],
+			currentRotation: [0,180,0],
+			currentTranslation: [0.118,0.35,-0.25]
 		},
+		animation: {
+			rotationAngle: [1.25,0,0],
+			translationDelta: null
+		}
 	});
 
 	nyanCat.child.push({
@@ -135,16 +119,14 @@ function createNyanCat() {
 		color: vec4(0.6, 0.6, 0.6, 1.0),
 		materialShininess: nyanCat.materialShininess,
 		mvParams: {
-			scaleFactorX: 0.07,
-			scaleFactorY: 0.07,
-			scaleFactorZ: 0.25,
-			rotateX: 0,
-			rotateY: 0,
-			rotateZ: 0,
-			dX: -0.118,
-			dY: 0.35,
-			dZ: -0.5
+			scaleFactor: [0.07,0.07,0.25],
+			currentRotation: [0,180,0],
+			currentTranslation: [-0.118,0.35,-0.25]
 		},
+		animation: {
+			rotationAngle: [1.25,0,0],
+			translationDelta: null
+		}
 	});
 
 	nyanCat.child.push({
@@ -156,16 +138,14 @@ function createNyanCat() {
 		color: vec4(0.6, 0.6, 0.6, 1.0),
 		materialShininess: nyanCat.materialShininess,
 		mvParams: {
-			scaleFactorX: 0.07,
-			scaleFactorY: 0.07,
-			scaleFactorZ: 0.25,
-			rotateX: 0,
-			rotateY: 0,
-			rotateZ: 0,
-			dX: 0.118,
-			dY: -0.35,
-			dZ: -0.5
+			scaleFactor: [0.07,0.07,0.25],
+			currentRotation: [0,180,0],
+			currentTranslation: [0.118,-0.35,-0.25]
 		},
+		animation: {
+			rotationAngle: [-1.25,0,0],
+			translationDelta: null
+		}
 	});
 
 	nyanCat.child.push({
@@ -177,16 +157,14 @@ function createNyanCat() {
 		color: vec4(0.6, 0.6, 0.6, 1.0),
 		materialShininess: nyanCat.materialShininess,
 		mvParams: {
-			scaleFactorX: 0.07,
-			scaleFactorY: 0.07,
-			scaleFactorZ: 0.25,
-			rotateX: 0,
-			rotateY: 0,
-			rotateZ: 0,
-			dX: -0.118,
-			dY: -0.35,
-			dZ: -0.5
+			scaleFactor: [0.07,0.07,0.25],
+			currentRotation: [0,180,0],
+			currentTranslation: [-0.118,-0.35,-0.25]
 		},
+		animation: {
+			rotationAngle: [-1.25,0,0],
+			translationDelta: null
+		}
 	});
 
 	// Nyan Cat's Tail
@@ -194,21 +172,19 @@ function createNyanCat() {
 		child: null,
 		geometry: cylinderMesh,
 		useTexture: [false, false, false],
-		textureImages: [],
-		textures: [],
+		textureImages: null,
+		textures: null,
 		color: vec4(0.6, 0.6, 0.6, 1.0),
 		materialShininess: nyanCat.materialShininess,
 		mvParams: {
-			scaleFactorX: 0.05,
-			scaleFactorY: 0.05,
-			scaleFactorZ: 0.5,
-			rotateX: 20,
-			rotateY: 0,
-			rotateZ: 0,
-			dX: 0.0,
-			dY: -0.5,
-			dZ: 0.0
+			scaleFactor: [0.05,0.05,0.5],
+			currentRotation: [20,0,0],
+			currentTranslation: [0.0,-0.5,0.0]
 		},
+		animation: {
+			rotationAngle: [0,1,0],
+			translationDelta: null
+		}
 	});
 }
 
@@ -223,15 +199,9 @@ function createGroundPlane() {
 		color: vec4(0.09, 0.32, 0.55, 1.0),
 		materialShininess: 2.0,
 		mvParams: {
-			scaleFactorX: 0.8,
-			scaleFactorY: 0.8,
-			scaleFactorZ: 0.8,
-			rotateX: 0,
-			rotateY: 0,
-			rotateZ: 0,
-			dX: 0.0,
-			dY: 0.0,
-			dZ: -0.5
+			scaleFactor: [0.8,0.8,0.8],
+			currentRotation: [0,0,0],
+			currentTranslation: [0,0,-0.5]
 		}
 	};
 }

@@ -41,11 +41,13 @@ function generateGeometry() {
 		drawMethod: gl.TRIANGLES
 	};
 
-	groundPlaneMesh = generateGroundPlaneGeometry(10, 10, 0);
+	var width = 6;
+	var height = 6;
+	groundPlaneMesh = generateGroundPlaneGeometry(width, height, 0);
 	groundPlaneMesh.params = {
 		faces: 1,
 		itemSize: 3,
-		numItems: 600,
+		numItems: 6*width*height,
 		drawMethod: gl.TRIANGLES
 	};
 }
