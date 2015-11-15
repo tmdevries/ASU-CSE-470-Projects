@@ -20,19 +20,22 @@ var projection;
 var lpParams = {
     step: 0, // TARA: for rotation
     stepMax: 10000,
-    eye: vec3( 5.0 , 0.0 , 1.0 ), // TARA: position of the camera
+    eye: vec3( 5.0 , 0.0 , 2.0 ), // TARA: position of the camera
     at: vec3( 0, 0, 0 ), // TARA: what point the camera is looking at
     up: vec3( 0, 0, 1 ), // TARA: Vector that tells the camera which way it's oriented. 
                          // Eg. -1 for y makes the world look up-side down
     pMatrix: perspective( 45, 1.0, 0.1, 100 )
 }; // TARA: This is the same for all geometries so that is why it is only defined once.
 
+// used for shifting the rainbow, making it look animated
+var rainbowStep = { step: Math.PI/12, now: 0.0};
+
 //-------------------------------------------------------------------------------------
 function draw(object) {
     prepBuffer(object.geometry);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);
-    gl.vertexAttribPointer( shaderProgram.vertexPositionAttribute, object.geometry.params.itemSize, gl.FLOAT, false, 0, 0 );
+    gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, object.geometry.params.itemSize, gl.FLOAT, false, 0, 0);
     
     // TARA: Create the transformations for the modelView. I chose a position in which you can clearly
     // see the ground plane and cylinder. It is global so that I can easily change this value without
@@ -59,16 +62,23 @@ function draw(object) {
     
     // TARA: Now it's time to load the texture coordinates. The itemSize of this is always 2.
     gl.bindBuffer(gl.ARRAY_BUFFER, triangleTextCoordBuffer);
-    gl.vertexAttribPointer( shaderProgram.textureAttribute, 2, gl.FLOAT, false, 0, 0 );
-    gl.activeTexture(gl.TEXTURE0);
-    gl.uniform1i( shaderProgram.textureImageUniform, 0 );
+    gl.vertexAttribPointer(shaderProgram.textureAttribute, 2, gl.FLOAT, false, 0, 0);
+    gl.activeTexture( gl.TEXTURE0 );
+    gl.uniform1i(shaderProgram.textureImageUniform, 0);
 
     gl.uniform4fv(shaderProgram.colorUniform, object.color);
 
     // TARA: Last, but not least, pass the normals into the shader
     gl.bindBuffer(gl.ARRAY_BUFFER, triangleNormalVectorBuffer);
-    gl.vertexAttribPointer( shaderProgram.normalVectorAttribute, 3, gl.FLOAT, false, 0, 0 );
+    gl.vertexAttribPointer(shaderProgram.normalVectorAttribute, 3, gl.FLOAT, false, 0, 0);
 
+    if (object.geometry==uniformGroundPlaneMesh) {
+        gl.uniform1i(shaderProgram.useRainbowUniform, 1);
+        gl.uniform1f(shaderProgram.rainbowStepUniform, rainbowStep.now);
+        rainbowStep.now+=rainbowStep.step;
+    } else {
+        gl.uniform1i(shaderProgram.useRainbowUniform, 0);
+    }
     drawFaces(object);
         
     if (object.child !== null) {

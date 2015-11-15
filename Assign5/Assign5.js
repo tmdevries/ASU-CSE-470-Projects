@@ -12,7 +12,7 @@ window.onload = function init()
 
     //  Configure WebGL
     gl.viewport( 0, 0, canvas.width, canvas.height );
-    gl.clearColor( 1.0, 1.0, 1.0, 1.0 );
+    gl.clearColor(0.09, 0.32, 0.55, 1.0);
 
     gl.enable(gl.DEPTH_TEST);
 
@@ -33,6 +33,10 @@ window.onload = function init()
     initTextures(nyanCat);
     initTextures(groundPlane);
 
+    canvas.addEventListener("onkeypress", function(event) {
+
+    });
+
     render();
 };
 
@@ -48,6 +52,8 @@ function initAttributesAndUniforms() {
     // texture uniforms
     shaderProgram.useTextureUniform = gl.getUniformLocation(shaderProgram, "uUseTextureImg");
     shaderProgram.textureImageUniform = gl.getUniformLocation(shaderProgram, "uTextureImg");
+    shaderProgram.useRainbowUniform = gl.getUniformLocation(shaderProgram, "uRainbowEffect");
+    shaderProgram.rainbowStepUniform = gl.getUniformLocation(shaderProgram, "uRainbowStep");
 
     // normal vector attribute
     shaderProgram.normalVectorAttribute = gl.getAttribLocation(shaderProgram, "aNormal");

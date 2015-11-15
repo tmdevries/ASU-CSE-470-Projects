@@ -3,7 +3,13 @@
 // This file contains the functions that relate to moving the hierarchical creature 
 // around the scene.
 //-------------------------------------------------------------------------------------
-var iteration = 0;
+
+//-------------------------------------------------------------------------------------
+// Global Variables
+//-------------------------------------------------------------------------------------
+
+var wait = { max: 200, now: 0};
+
 //-------------------------------------------------------------------------------------
 function animate() {
     // TARA: start by moving the individual parts of the nyan
@@ -15,10 +21,8 @@ function animate() {
                                                        // and backwards
     rotatePartWithReverse(nyanCat.child[5], [0,-20,0], [0,20,0]); // tail, swishes back and forth
 
-    translatePartWithReverse(nyanCat.child[0], [0,0,-0.2], [0,0,-0.15]); // bob head up and down
-
     rotatePartAndChildren(nyanCat, 1, 2); // start with a circle path, moving entire cat.
-
+    jump();
 }
 
 //-------------------------------------------------------------------------------------
@@ -64,11 +68,31 @@ function translatePartWithReverse(part, lowerLimit, upperLimit) {
 }
 
 //-------------------------------------------------------------------------------------
+// NOTE: This ONLY works because all parts are rotated 180 degrees about the z axis. If
+// this isn't the case, the parts won't move to the same location
+//-------------------------------------------------------------------------------------
 function translatePartAndChildren(part, delta, index) {
     part.mvParams.currentTranslation[index]+=delta;
     if (part.child !== null) {
         for (var i = 0; i < part.child.length; i++) {
             translatePartAndChildren(part.child[i], delta, index);
         }
+    }
+}
+
+//-------------------------------------------------------------------------------------
+function jump() {
+    if (wait.now===0) {
+        // Now start the jump since it no longer needs to wait
+        translatePartWithReverse(nyanCat, [0,0,0], [0,0,0.5]);
+    }
+    if (nyanCat.mvParams.currentTranslation[2]+nyanCat.animation.translationDelta[2]<0.0) {
+        wait.now = wait.max; // reset the wait clock once the jump is complete
+        nyanCat.animation.translationDelta[2]= -nyanCat.animation.translationDelta[2]; // reset dZ
+    }
+    if (wait.now > 0) {
+        // bob head up and down, only if not jumping
+        translatePartWithReverse(nyanCat.child[0], [0,0,-0.2], [0,0,-0.1]);
+        wait.now--; // only decrememnt if Nyan is waiting to jump
     }
 }

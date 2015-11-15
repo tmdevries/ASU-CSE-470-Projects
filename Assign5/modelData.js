@@ -33,8 +33,8 @@ function createNyanCat() {
 			currentTranslation: [0,0,0]
 		},
 		animation: {
-			rotationAngle: [0,0,0],
-			translationDelta: [0.01,0,0]
+			rotationAngle: null,
+			translationDelta: [0.0,0.0,0.02]
 		}
 	};
 	// Nyan Cat's Head
@@ -53,7 +53,7 @@ function createNyanCat() {
 		},
 		animation: {
 			rotationAngle: null,
-			translationDelta: [0,0,-0.0025]
+			translationDelta: [0,0,-0.0075]
 		}
 	});
 	
@@ -105,7 +105,7 @@ function createNyanCat() {
 			currentTranslation: [0.118,0.35,-0.25]
 		},
 		animation: {
-			rotationAngle: [1.25,0,0],
+			rotationAngle: [1.5,0,0],
 			translationDelta: null
 		}
 	});
@@ -124,7 +124,7 @@ function createNyanCat() {
 			currentTranslation: [-0.118,0.35,-0.25]
 		},
 		animation: {
-			rotationAngle: [1.25,0,0],
+			rotationAngle: [1.5,0,0],
 			translationDelta: null
 		}
 	});
@@ -143,7 +143,7 @@ function createNyanCat() {
 			currentTranslation: [0.118,-0.35,-0.25]
 		},
 		animation: {
-			rotationAngle: [-1.25,0,0],
+			rotationAngle: [-1.5,0,0],
 			translationDelta: null
 		}
 	});
@@ -162,7 +162,7 @@ function createNyanCat() {
 			currentTranslation: [-0.118,-0.35,-0.25]
 		},
 		animation: {
-			rotationAngle: [-1.25,0,0],
+			rotationAngle: [-1.5,0,0],
 			translationDelta: null
 		}
 	});
@@ -187,6 +187,22 @@ function createNyanCat() {
 		}
 	});
 
+	nyanCat.child.push({
+		child: null,
+		geometry: uniformGroundPlaneMesh,
+		useTexture: [false],
+		textureImages: null,
+		textures: null,
+		color: vec4(0.09, 0.32, 0.55, 0.0),
+		materialShininess: 18.0,
+		mvParams: {
+			scaleFactor: [0.35, 0.8, 1],
+			currentRotation: [0,90,180],
+			currentTranslation: [0,-1,0]
+		},
+		animation: null
+	});
+
 	translatePartAndChildren(nyanCat, 1.5, 0);
 }
 
@@ -194,14 +210,14 @@ function createNyanCat() {
 function createGroundPlane() {
 	groundPlane = {
 		child: null,
-		geometry: groundPlaneMesh,
+		geometry: patternedGroundPlaneMesh,
 		useTexture: [true],
 		textureImages: ["stars.png"],
 		textures: [],
 		color: vec4(0.09, 0.32, 0.55, 1.0),
 		materialShininess: 2.0,
 		mvParams: {
-			scaleFactor: [2,2,2],
+			scaleFactor: [2.5,2.5,2.5],
 			currentRotation: [0,0,0],
 			currentTranslation: [0,0,-0.5]
 		}

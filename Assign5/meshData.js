@@ -12,7 +12,8 @@
 var cylinderMesh;
 var cubeMesh;
 var squarePyramidMesh;
-var groundPlaneMesh;
+var patternedGroundPlaneMesh;
+var uniformGroundPlaneMesh;
 
 //-------------------------------------------------------------------------------------
 function generateGeometry() {
@@ -43,8 +44,15 @@ function generateGeometry() {
 
 	var width = 6;
 	var height = 6;
-	groundPlaneMesh = generateGroundPlaneGeometry(width, height, 0);
-	groundPlaneMesh.params = {
+	patternedGroundPlaneMesh = generateGroundPlaneGeometry(width, height, 0);
+	patternedGroundPlaneMesh.params = {
+		faces: 1,
+		itemSize: 3,
+		numItems: 6*width*height,
+		drawMethod: gl.TRIANGLES
+	};
+	uniformGroundPlaneMesh = generateGroundPlaneGeometry(width, height, 1);
+	uniformGroundPlaneMesh.params = {
 		faces: 1,
 		itemSize: 3,
 		numItems: 6*width*height,

@@ -56,6 +56,8 @@ uniform float uShininess;
 uniform sampler2D uTextureImg;
 uniform vec4 uColor;
 uniform bool uUseTextureImg;
+uniform bool uRainbowEffect;
+uniform float uRainbowStep;
 
 void
 main()
@@ -78,12 +80,42 @@ main()
 
     // Final color
     vec4 fragmentColor;
-    if (uUseTextureImg) {
-    	fragmentColor = texture2D(uTextureImg, vec2(vTexCoord.s, vTexCoord.t));
+    if (!uRainbowEffect) {
+        if (uUseTextureImg) {
+        	fragmentColor = texture2D(uTextureImg, vec2(vTexCoord.s, vTexCoord.t));
+        } else {
+        	fragmentColor = uColor;
+        }
+        gl_FragColor = vec4(fragmentColor.rgb * phongLight, fragmentColor.a);
     } else {
-    	fragmentColor = uColor;
+        float PI = 3.14159;
+        float x = vTexCoord.t*2.0*PI; // because the texture coordinate s varies from 0 to 1 and the sine curve oscillates between 0 and 2*pi
+        float y = -0.1*sin(2.0*x+uRainbowStep)+0.4; // my sine curve, amplitude = -1/2
+        // vary the translations of the curve in order to get different thicknesses of the bands that will be created
+        if (vTexCoord.s < y + 0.3 && vTexCoord.s > y + 0.2) {
+            // red
+            fragmentColor = vec4(1.0, 0.0, 0.0, 1.0);
+        } else if (vTexCoord.s < y + 0.2 && vTexCoord.s > y + 0.1) {
+            // orange
+            fragmentColor = vec4(1.0, 0.6, 0.0, 1.0);
+        } else if (vTexCoord.s < y + 0.1 && vTexCoord.s > y) {
+            // yellow
+            fragmentColor = vec4(1.0, 1.0, 0.0, 1.0);
+        } else if (vTexCoord.s < y && vTexCoord.s > y - 0.1) {
+            // green
+            fragmentColor = vec4(0.2, 1.0, 0.0, 1.0);
+        } else if (vTexCoord.s < y - 0.1 && vTexCoord.s > y - 0.2) {
+            // blue
+            fragmentColor = vec4(0.0, 0.6, 1.0, 1.0);
+        } else if (vTexCoord.s < y - 0.2 && vTexCoord.s > y - 0.3) {
+            // purple
+            fragmentColor = vec4(0.4, 0.2, 1.0, 1.0);
+        } else {
+            discard; // don't write the pixel. Information on how to do this found here:
+            // http://gamedev.stackexchange.com/questions/100570/how-can-i-tell-a-fragment-shader-to-not-write-a-particular-pixel
+        }
+        gl_FragColor = fragmentColor; // no lighting effects if it's the rainbow
     }
-    gl_FragColor = vec4(fragmentColor.rgb * phongLight, fragmentColor.a);
      
 }
 </script>
@@ -104,5 +136,9 @@ main()
 <canvas id="gl-canvas" width="512" height="512">
 Oops ... your browser doesn't support the HTML5 canvas element
 </canvas>
+<audio controls>
+  <source src="NyanCat.mp3" type="audio/mp3">
+Your browser does not support the audio element.
+</audio>
 </body>
 </html>
