@@ -17,9 +17,14 @@ var modelView;
 
 // Camera and Projection
 var projection;
+/*var parametricParams = {
+    t: 0,
+    a: ,
+    b: ,
+    c: 
+};*/
 var lpParams = {
-    step: 0, // TARA: for rotation
-    stepMax: 10000,
+    angle: 0, // TARA: for rotating the camera
     eye: vec3( 5.0 , 0.0 , 2.0 ), // TARA: position of the camera
     at: vec3( 0, 0, 0 ), // TARA: what point the camera is looking at
     up: vec3( 0, 0, 1 ), // TARA: Vector that tells the camera which way it's oriented. 
@@ -44,6 +49,9 @@ function draw(object) {
     modelView = mult(rotate(object.mvParams.currentRotation[0],[1,0,0]), modelView);
     modelView = mult(rotate(object.mvParams.currentRotation[1],[0,1,0]), modelView);
     modelView = mult(translate(object.mvParams.currentTranslation[0],object.mvParams.currentTranslation[1],object.mvParams.currentTranslation[2]), modelView);
+    // TARA: rotation about z multiplied last because multiplying it before moving the parts via translation
+    // makes the parts end up in different places, not all together. Also allows my character to move in
+    // a circle without defining a specific path. I just increase the z rotation angle at each render.
     modelView = mult(rotate(object.mvParams.currentRotation[2],[0,0,1]), modelView);
 
     gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, flatten(modelView));
@@ -54,7 +62,6 @@ function draw(object) {
     gl.uniformMatrix3fv(shaderProgram.normalMatrixUniform, false, flatten(normalMatrix(modelView, 1)));
 
     // TARA: Now, prepare the projection matrix
-    //rotateCamera();
     projection = mult(lpParams.pMatrix, lookAt(lpParams.eye, lpParams.at, lpParams.up)); // TARA: multiply look first
     gl.uniformMatrix4fv(shaderProgram.projectionMatrixUniform, false, flatten(projection));
 
@@ -253,15 +260,3 @@ function prepBuffer(mesh) {
     gl.bindBuffer( gl.ARRAY_BUFFER, triangleNormalVectorBuffer );
     gl.bufferData( gl.ARRAY_BUFFER, flatten(mesh.normals), gl.STATIC_DRAW );
 }
-
-//-------------------------------------------------------------------------------------
-function rotateCamera() {
-    if (lpParams.step===lpParams.stepMax) {
-        lpParams.step = 0;
-    }
-    var angle = (lpParams.step*2*Math.PI) / lpParams.stepMax;
-    lpParams.eye[0] = 2*Math.cos(angle);
-    lpParams.eye[1] = 2*Math.sin(angle);
-    lpParams.step++;
-}
-

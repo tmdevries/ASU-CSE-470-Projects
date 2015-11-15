@@ -194,7 +194,7 @@ function createNyanCat() {
 		textureImages: null,
 		textures: null,
 		color: vec4(0.09, 0.32, 0.55, 0.0),
-		materialShininess: 18.0,
+		materialShininess: null,
 		mvParams: {
 			scaleFactor: [0.35, 0.8, 1],
 			currentRotation: [0,90,180],

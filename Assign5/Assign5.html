@@ -89,29 +89,34 @@ main()
         gl_FragColor = vec4(fragmentColor.rgb * phongLight, fragmentColor.a);
     } else {
         float PI = 3.14159;
-        float x = vTexCoord.t*2.0*PI; // because the texture coordinate s varies from 0 to 1 and the sine curve oscillates between 0 and 2*pi
-        float y = -0.1*sin(2.0*x+uRainbowStep)+0.4; // my sine curve, amplitude = -1/2
+        // because the texture coordinate t varies from 0 to 1 and the sine curve oscillates 
+        // between 0 and 2*pi. I use t because my rainbow had to rotate to be in the location 
+        // I wanted it so t is now the "x" axis
+        float x = vTexCoord.t*2.0*PI; 
+        // my sine curve, amplitude = 0.1 (to make it "shorter"). A step is added to animate the
+        // rainbow. rainbowStep is managed in objectDraw.js
+        float y = 0.1*sin(2.0*x+uRainbowStep)+0.4; 
         // vary the translations of the curve in order to get different thicknesses of the bands that will be created
         if (vTexCoord.s < y + 0.3 && vTexCoord.s > y + 0.2) {
-            // red
-            fragmentColor = vec4(1.0, 0.0, 0.0, 1.0);
-        } else if (vTexCoord.s < y + 0.2 && vTexCoord.s > y + 0.1) {
-            // orange
-            fragmentColor = vec4(1.0, 0.6, 0.0, 1.0);
-        } else if (vTexCoord.s < y + 0.1 && vTexCoord.s > y) {
-            // yellow
-            fragmentColor = vec4(1.0, 1.0, 0.0, 1.0);
-        } else if (vTexCoord.s < y && vTexCoord.s > y - 0.1) {
-            // green
-            fragmentColor = vec4(0.2, 1.0, 0.0, 1.0);
-        } else if (vTexCoord.s < y - 0.1 && vTexCoord.s > y - 0.2) {
-            // blue
-            fragmentColor = vec4(0.0, 0.6, 1.0, 1.0);
-        } else if (vTexCoord.s < y - 0.2 && vTexCoord.s > y - 0.3) {
             // purple
             fragmentColor = vec4(0.4, 0.2, 1.0, 1.0);
+        } else if (vTexCoord.s < y + 0.2 && vTexCoord.s > y + 0.1) {
+            // blue
+            fragmentColor = vec4(0.0, 0.6, 1.0, 1.0);            
+        } else if (vTexCoord.s < y + 0.1 && vTexCoord.s > y) {
+            // green
+            fragmentColor = vec4(0.2, 1.0, 0.0, 1.0);
+        } else if (vTexCoord.s < y && vTexCoord.s > y - 0.1) {
+            // yellow
+            fragmentColor = vec4(1.0, 1.0, 0.0, 1.0);
+        } else if (vTexCoord.s < y - 0.1 && vTexCoord.s > y - 0.2) {
+            // orange
+            fragmentColor = vec4(1.0, 0.6, 0.0, 1.0);
+        } else if (vTexCoord.s < y - 0.2 && vTexCoord.s > y - 0.3) {
+            // red
+            fragmentColor = vec4(1.0, 0.0, 0.0, 1.0);
         } else {
-            discard; // don't write the pixel. Information on how to do this found here:
+            discard; // don't write the pixel. Information on how to do this I found here:
             // http://gamedev.stackexchange.com/questions/100570/how-can-i-tell-a-fragment-shader-to-not-write-a-particular-pixel
         }
         gl_FragColor = fragmentColor; // no lighting effects if it's the rainbow
@@ -132,7 +137,7 @@ main()
 
 </head>
 
-<body>
+<body onkeypress="handleKeyPress(event)">
 <canvas id="gl-canvas" width="512" height="512">
 Oops ... your browser doesn't support the HTML5 canvas element
 </canvas>

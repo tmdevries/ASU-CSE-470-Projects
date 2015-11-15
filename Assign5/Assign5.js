@@ -33,10 +33,6 @@ window.onload = function init()
     initTextures(nyanCat);
     initTextures(groundPlane);
 
-    canvas.addEventListener("onkeypress", function(event) {
-
-    });
-
     render();
 };
 
@@ -122,4 +118,31 @@ function onImageLoad(texture) {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     gl.bindTexture(gl.TEXTURE_2D, null);
+}
+
+//-------------------------------------------------------------------------------------
+function handleKeyPress(event) {
+    var x = event.which || event.keyCode;
+    if (x == "38") {
+        moveCamera(9/10);
+    } else if (x == "40") {
+        moveCamera(10/9);
+    } else if (x == "37") {
+
+    } else if (x == "39") {
+
+    }
+}
+
+//-------------------------------------------------------------------------------------
+function moveCamera(scale) {
+    lpParams.eye = scale(scale, lpParams.eye);
+}
+
+//-------------------------------------------------------------------------------------
+function rotateCamera() {
+    var angle = (lpParams.step*2*Math.PI) / lpParams.stepMax;
+    lpParams.eye[0] = 2*Math.cos(angle);
+    lpParams.eye[1] = 2*Math.sin(angle);
+    lpParams.step++;
 }
