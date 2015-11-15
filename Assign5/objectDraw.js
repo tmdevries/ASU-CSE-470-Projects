@@ -20,7 +20,7 @@ var projection;
 var lpParams = {
     step: 0, // TARA: for rotation
     stepMax: 10000,
-    eye: vec3( 0.0 , -1.5 , 1.0 ), // TARA: position of the camera
+    eye: vec3( 5.0 , 0.0 , 1.0 ), // TARA: position of the camera
     at: vec3( 0, 0, 0 ), // TARA: what point the camera is looking at
     up: vec3( 0, 0, 1 ), // TARA: Vector that tells the camera which way it's oriented. 
                          // Eg. -1 for y makes the world look up-side down
@@ -40,8 +40,8 @@ function draw(object) {
     modelView = mult(scalem(object.mvParams.scaleFactor[0],object.mvParams.scaleFactor[1],object.mvParams.scaleFactor[2]), mat4());
     modelView = mult(rotate(object.mvParams.currentRotation[0],[1,0,0]), modelView);
     modelView = mult(rotate(object.mvParams.currentRotation[1],[0,1,0]), modelView);
-    modelView = mult(rotate(object.mvParams.currentRotation[2],[0,0,1]), modelView);
     modelView = mult(translate(object.mvParams.currentTranslation[0],object.mvParams.currentTranslation[1],object.mvParams.currentTranslation[2]), modelView);
+    modelView = mult(rotate(object.mvParams.currentRotation[2],[0,0,1]), modelView);
 
     gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, flatten(modelView));
 
@@ -51,7 +51,7 @@ function draw(object) {
     gl.uniformMatrix3fv(shaderProgram.normalMatrixUniform, false, flatten(normalMatrix(modelView, 1)));
 
     // TARA: Now, prepare the projection matrix
-    rotateCamera();
+    //rotateCamera();
     projection = mult(lpParams.pMatrix, lookAt(lpParams.eye, lpParams.at, lpParams.up)); // TARA: multiply look first
     gl.uniformMatrix4fv(shaderProgram.projectionMatrixUniform, false, flatten(projection));
 
@@ -255,72 +255,3 @@ function rotateCamera() {
     lpParams.step++;
 }
 
-//-------------------------------------------------------------------------------------
-function animate() {
-    // TARA: start by moving the individual parts of the nyan
-    // cat: the head (w/ ears!), legs, and tail
-    rotatePart(nyanCat.child[1], [-25,0,0], [25,0,0]); // first leg
-    rotatePart(nyanCat.child[2], [-25,0,0], [25,0,0]); // second leg
-    rotatePart(nyanCat.child[3], [-25,0,0], [25,0,0]); // third leg
-    rotatePart(nyanCat.child[4], [-25,0,0], [25,0,0]); // fourth leg, all rotate forwards 
-                                                       // and backwards
-    rotatePart(nyanCat.child[5], [0,-20,0], [0,20,0]); // tail, swishes back and forth
-
-    translatePart(nyanCat.child[0], [0,0,-0.2], [0,0,-0.15]); // bob head up and down
-
-    translatePart(nyanCat, [-1,-1,0], [1,1,0]); // start with a circle path. Want to 
-                                                // add jumping (dZ)
-
-}
-
-//-------------------------------------------------------------------------------------
-function rotatePart(part, lowerLimit, upperLimit) {
-    if (lowerLimit.length != 3 || upperLimit.length != 3) {
-        console.log("This animation requires limits for all 3 angles even if just 0 degrees.");
-        return;
-    } // just in case I forget; it isn't safe to assume which axis to rotate around
-    for (var i = 0; i < 3; i++) {
-        if (part.animation.rotationAngle[i]+part.mvParams.currentRotation[i] < lowerLimit[i] ||
-            part.animation.rotationAngle[i]+part.mvParams.currentRotation[i] > upperLimit[i]) {
-            // reverse the rotation
-            part.animation.rotationAngle[i] = -part.animation.rotationAngle[i];
-        }
-        rotatePartAndChildren(part, part.animation.rotationAngle[i], i);
-    }
-}
-
-//-------------------------------------------------------------------------------------
-function rotatePartAndChildren(part, angle, index) {
-    part.mvParams.currentRotation[index]+=angle;
-    if (part.child !== null) {
-        for (var i = 0; i < part.child.length; i++) {
-            rotatePartAndChildren(part.child[i], angle, index);
-        }
-    }
-}
-
-//-------------------------------------------------------------------------------------
-function translatePart(part, lowerLimit, upperLimit) {
-    if (lowerLimit.length != 3 || upperLimit.length != 3) {
-        console.log("This animation requires limits for all 3 axes even if just 0 steps.");
-        return;
-    } // just in case I forget; it isn't safe to assume which axis to rotate around
-    for (var i = 0; i < 3; i++) {
-        if (part.animation.translationDelta[i]+part.mvParams.currentTranslation[i] < lowerLimit[i] ||
-            part.animation.translationDelta[i]+part.mvParams.currentTranslation[i] > upperLimit[i]) {
-            // reverse the translation
-            part.animation.translationDelta[i] = -part.animation.translationDelta[i];
-        }
-        translatePartAndChildren(part, part.animation.translationDelta[i], i);
-    }
-}
-
-//-------------------------------------------------------------------------------------
-function translatePartAndChildren(part, delta, index) {
-    part.mvParams.currentTranslation[index]+=delta;
-    if (part.child !== null) {
-        for (var i = 0; i < part.child.length; i++) {
-            translatePartAndChildren(part.child[i], delta, index);
-        }
-    }
-}

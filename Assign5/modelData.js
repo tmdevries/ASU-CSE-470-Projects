@@ -29,12 +29,12 @@ function createNyanCat() {
 		materialShininess: 12.8,
 		mvParams: {
 			scaleFactor: [0.05,0.5,0.35],
-			currentRotation: [0,0,0],
+			currentRotation: [0,0,180],
 			currentTranslation: [0,0,0]
 		},
 		animation: {
-			rotationAngle: null,
-			translationDelta: [0,0,0]
+			rotationAngle: [0,0,0],
+			translationDelta: [0.01,0,0]
 		}
 	};
 	// Nyan Cat's Head
@@ -48,7 +48,7 @@ function createNyanCat() {
 		materialShininess: nyanCat.materialShininess,
 		mvParams: {
 			scaleFactor: [0.3,0.25,0.1],
-			currentRotation: [90,0,0],
+			currentRotation: [90,0,180],
 			currentTranslation: [0,0.6,-0.15]
 		},
 		animation: {
@@ -68,7 +68,7 @@ function createNyanCat() {
 		materialShininess: nyanCat.materialShininess,
 		mvParams: {
 			scaleFactor: [0.17,0.25,0.05],
-			currentRotation: [90,44,0],
+			currentRotation: [90,44,180],
 			currentTranslation: [0.15,0.55,-0.05]
 		},
 		animation: null
@@ -84,7 +84,7 @@ function createNyanCat() {
 		materialShininess: nyanCat.materialShininess,
 		mvParams: {
 			scaleFactor: [0.17,0.25,0.05],
-			currentRotation: [90,-44,0],
+			currentRotation: [90,-44,180],
 			currentTranslation: [-0.15,0.55,-0.05]
 		},
 		animation: null
@@ -101,7 +101,7 @@ function createNyanCat() {
 		materialShininess: nyanCat.materialShininess,
 		mvParams: {
 			scaleFactor: [0.07,0.07,0.25],
-			currentRotation: [0,180,0],
+			currentRotation: [0,180,180],
 			currentTranslation: [0.118,0.35,-0.25]
 		},
 		animation: {
@@ -120,7 +120,7 @@ function createNyanCat() {
 		materialShininess: nyanCat.materialShininess,
 		mvParams: {
 			scaleFactor: [0.07,0.07,0.25],
-			currentRotation: [0,180,0],
+			currentRotation: [0,180,180],
 			currentTranslation: [-0.118,0.35,-0.25]
 		},
 		animation: {
@@ -139,7 +139,7 @@ function createNyanCat() {
 		materialShininess: nyanCat.materialShininess,
 		mvParams: {
 			scaleFactor: [0.07,0.07,0.25],
-			currentRotation: [0,180,0],
+			currentRotation: [0,180,180],
 			currentTranslation: [0.118,-0.35,-0.25]
 		},
 		animation: {
@@ -158,7 +158,7 @@ function createNyanCat() {
 		materialShininess: nyanCat.materialShininess,
 		mvParams: {
 			scaleFactor: [0.07,0.07,0.25],
-			currentRotation: [0,180,0],
+			currentRotation: [0,180,180],
 			currentTranslation: [-0.118,-0.35,-0.25]
 		},
 		animation: {
@@ -178,7 +178,7 @@ function createNyanCat() {
 		materialShininess: nyanCat.materialShininess,
 		mvParams: {
 			scaleFactor: [0.05,0.05,0.5],
-			currentRotation: [20,0,0],
+			currentRotation: [20,0,180],
 			currentTranslation: [0.0,-0.5,0.0]
 		},
 		animation: {
@@ -186,6 +186,8 @@ function createNyanCat() {
 			translationDelta: null
 		}
 	});
+
+	translatePartAndChildren(nyanCat, 1.5, 0);
 }
 
 //-------------------------------------------------------------------------------------
@@ -199,7 +201,7 @@ function createGroundPlane() {
 		color: vec4(0.09, 0.32, 0.55, 1.0),
 		materialShininess: 2.0,
 		mvParams: {
-			scaleFactor: [0.8,0.8,0.8],
+			scaleFactor: [2,2,2],
 			currentRotation: [0,0,0],
 			currentTranslation: [0,0,-0.5]
 		}

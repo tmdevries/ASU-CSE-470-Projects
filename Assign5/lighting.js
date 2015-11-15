@@ -7,7 +7,7 @@
 // Global Variable
 //-------------------------------------------------------------------------------------
 var lighting = {
-    lightPosition: vec3( 1.0, 1.0, 0.2 ),
+    lightPosition: vec3( 2.0, 1.0, 0.2 ),
     ambientColor: vec3( 0.3, 0.3, 0.3 ),
     diffuseColor: vec3( 0.8, 0.8, 0.8 ),
     specularColor: vec3( 0.3, 0.3, 0.3 )
