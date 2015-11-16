@@ -38,7 +38,7 @@ B) Special Functions
 
 I have added music to the page. Music volume can be changed and the 
 music can be played and paused using the audio control below the 
-canvas.
+canvas. Turn your system volume on and click play!
 
 #####################################################################
 C) Changes from Specs
