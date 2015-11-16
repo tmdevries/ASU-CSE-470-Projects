@@ -11,11 +11,7 @@
 // Global Variables
 //-------------------------------------------------------------------------------------
 var nyanCat;
-
 var groundPlane;
-
-//-------------------------------------------------------------------------------------
-
 
 //-------------------------------------------------------------------------------------
 function createNyanCat() {
@@ -23,7 +19,7 @@ function createNyanCat() {
 		child: [],
 		geometry: cubeMesh,
 		useTexture: [false, false, false, false, true, false],
-		textureImages: [null, null, null, null, "poptart.png", null],
+		textureImages: [null, null, null, null, "body.png", null],
 		textures: [],
 		color: vec4(0.98, 0.8, 0.62, 1.0),
 		materialShininess: 12.8,
@@ -187,6 +183,8 @@ function createNyanCat() {
 		}
 	});
 
+	// Finally, a "ground plane" with uniform texture coordinates to
+	// make a rainbow come out from behind Nyan Cat.
 	nyanCat.child.push({
 		child: null,
 		geometry: uniformGroundPlaneMesh,
@@ -203,6 +201,9 @@ function createNyanCat() {
 		animation: null
 	});
 
+	// TARA: This will be the Nyan Cat's starting position, so that rotation about the 
+	// Z axis will cause it to move in a circle. The larger the second parameter is, 
+	// larger the circlular path ends up being. (It is the radius of the circle path.)
 	translatePartAndChildren(nyanCat, 1.5, 0);
 }
 

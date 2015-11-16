@@ -30,13 +30,13 @@ window.onload = function init()
     createGroundPlane();
     createNyanCat();
 
-    initTextures(nyanCat);
     initTextures(groundPlane);
+    initTextures(nyanCat);
 
     render();
 };
 
-//------------------------------------------------------------
+//-------------------------------------------------------------------------------------
 function initAttributesAndUniforms() {
     // vertex attribute  
     shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aPosition");
@@ -70,7 +70,7 @@ function initAttributesAndUniforms() {
     shaderProgram.colorUniform = gl.getUniformLocation(shaderProgram, "uColor");
 }
 
-//------------------------------------------------------------
+//-------------------------------------------------------------------------------------
 function render() {
 
     gl.clear( gl.COLOR_BUFFER_BIT );
@@ -82,6 +82,10 @@ function render() {
     window.requestAnimFrame(render);
 }
 
+//-------------------------------------------------------------------------------------
+// initTextures():
+// Goes through and object and all its chidlren and prepares the images to be used as 
+// textures
 //-------------------------------------------------------------------------------------
 function initTextures(object) {
     for (var i = 0; i < object.geometry.params.faces; i++) {
@@ -109,6 +113,10 @@ function imgLoad(object, index) {
 }
 
 //-------------------------------------------------------------------------------------
+// onImageLoad():
+// Set image properties for the shader. For the images that aren't square I use 
+// clamping to color the rest of the pixels.
+//-------------------------------------------------------------------------------------
 function onImageLoad(texture) {
     gl.bindTexture(gl.TEXTURE_2D, texture);
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
@@ -121,6 +129,9 @@ function onImageLoad(texture) {
 }
 
 //-------------------------------------------------------------------------------------
+// handleKeyPress():
+// Added to the body tag in the HTML file, this function handles the "onkeypress" event
+//-------------------------------------------------------------------------------------
 function handleKeyPress(event) {
     var x = event.which || event.keyCode;
     if (x == "38") {
@@ -128,21 +139,21 @@ function handleKeyPress(event) {
     } else if (x == "40") {
         moveCamera(10/9);
     } else if (x == "37") {
-
+        rotateCamera(-2);
     } else if (x == "39") {
-
+        rotateCamera(2);
     }
 }
 
 //-------------------------------------------------------------------------------------
-function moveCamera(scale) {
-    lpParams.eye = scale(scale, lpParams.eye);
+function moveCamera(scaleF) {
+    lpParams.eye = scale(scaleF, lpParams.eye);
 }
 
 //-------------------------------------------------------------------------------------
-function rotateCamera() {
-    var angle = (lpParams.step*2*Math.PI) / lpParams.stepMax;
-    lpParams.eye[0] = 2*Math.cos(angle);
-    lpParams.eye[1] = 2*Math.sin(angle);
-    lpParams.step++;
+function rotateCamera(angle) {
+    lpParams.angle+=angle;
+    var radius = Math.sqrt(Math.pow(lpParams.eye[0],2) + Math.pow(lpParams.eye[1], 2));
+    lpParams.eye[0] = radius*Math.cos(lpParams.angle*Math.PI/180.0);
+    lpParams.eye[1] = radius*Math.sin(lpParams.angle*Math.PI/180.0);
 }

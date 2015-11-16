@@ -17,12 +17,12 @@ function animate() {
     rotatePartWithReverse(nyanCat.child[1], [-25,0,0], [25,0,0]); // first leg
     rotatePartWithReverse(nyanCat.child[2], [-25,0,0], [25,0,0]); // second leg
     rotatePartWithReverse(nyanCat.child[3], [-25,0,0], [25,0,0]); // third leg
-    rotatePartWithReverse(nyanCat.child[4], [-25,0,0], [25,0,0]); // fourth leg, all rotate forwards 
-                                                       // and backwards
+    rotatePartWithReverse(nyanCat.child[4], [-25,0,0], [25,0,0]); // fourth leg, all rotate 
+                                                                  // forwards and backwards
     rotatePartWithReverse(nyanCat.child[5], [0,-20,0], [0,20,0]); // tail, swishes back and forth
 
-    rotatePartAndChildren(nyanCat, 1, 2); // start with a circle path, moving entire cat.
-    jump();
+    rotatePartAndChildren(nyanCat, 1.25, 2); // start with a circle path, moving entire cat.
+    jump(); // make cat jump or make its head bob up and down while it runs
 }
 
 //-------------------------------------------------------------------------------------
@@ -68,8 +68,8 @@ function translatePartWithReverse(part, lowerLimit, upperLimit) {
 }
 
 //-------------------------------------------------------------------------------------
-// NOTE: This ONLY works because all parts are rotated 180 degrees about the z axis. If
-// this isn't the case, the parts won't move to the same location
+// NOTE: This ONLY works because all parts are initially rotated 180 degrees about the
+// z axis. If this isn't the case, the parts won't move to the same location.
 //-------------------------------------------------------------------------------------
 function translatePartAndChildren(part, delta, index) {
     part.mvParams.currentTranslation[index]+=delta;

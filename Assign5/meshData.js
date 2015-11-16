@@ -1,9 +1,10 @@
 //-------------------------------------------------------------------------------------
 // meshData.js
 // This file contains functions for producing the vertex positions, texture 
-// coordinates, and vertex normals for a cylinder and a square pyramid. The global 
-// variables for the meshes are cylinderMesh, cubeMesh, and squareMesh. (Note that a 
-// cube is just a cylinder with a sample of 4). 
+// coordinates, and vertex normals for a cylinder, cube, square pyramid, and ground 
+// plane. The global variables are cylinderMesh, cubeMesh, squarePyramidMesh, 
+// patternedGroundPlaneMesh, and uniformGroundPlaneMesh. The latter two are generated
+// using the same width and height in squares but have different texture coordinates. 
 //-------------------------------------------------------------------------------------
 
 //-------------------------------------------------------------------------------------
@@ -23,7 +24,7 @@ function generateGeometry() {
 		faces: 3,
 		itemSize: 3,
 		numItems: 360,
-		drawMethod: gl.TRIANGLES
+		drawMethod: gl.TRIANGLES // superfluous but makes my code modular
 	};
 
 	cubeMesh = generateCubeGeometry();
@@ -51,6 +52,7 @@ function generateGeometry() {
 		numItems: 6*width*height,
 		drawMethod: gl.TRIANGLES
 	};
+
 	uniformGroundPlaneMesh = generateGroundPlaneGeometry(width, height, 1);
 	uniformGroundPlaneMesh.params = {
 		faces: 1,
@@ -61,7 +63,7 @@ function generateGeometry() {
 }
 
 //-------------------------------------------------------------------------------------
-// generateCylinderGeometry()
+// generateCylinderGeometry():
 // radius = 1, height = 1
 // The purpose of altering this method from the previous assignment is to be
 // able to use matrices to alter the look of a cylinder rather than redefine 
@@ -136,11 +138,11 @@ function generateCylinderGeometry(sample) {
 }
 
 //-------------------------------------------------------------------------------------
-// generateCubeGeometry()
+// generateCubeGeometry():
 // TARA: I originally intended to repurpose the cylinder mesh as a cube mesh by passing
-// 4 as the sample, but then scale the x, y, and z coordinates the way I wanted did not
-// work as expected. So, I went ahead and did the extra work of defining a cube 
-// explicitly.
+// 4 as the sample, but the orientation of the vertices made it so that you could not 
+// stretch a single pair of parallel sides by scaling on one axis. So, I define the 
+// cube geometry separately so I can make a rectangular prism with it.
 //-------------------------------------------------------------------------------------
 function generateCubeGeometry() {
 	var cubeMesh={vertices:[],texCoords:[],normals:[]};
@@ -289,8 +291,8 @@ function generateCubeGeometry() {
 //-------------------------------------------------------------------------------------
 function generateSquarePyramidGeometry() {
 	var squarePyramidMesh={vertices:[],texCoords:[],normals:[]};
-	// TARA: start with the vertex positions. I'm not sure how to define them procedurally, so I'm doing
-	// it explicitly
+	// TARA: start with the vertex positions. I'm not sure how to define them procedurally, 
+	// so I'm doing it explicitly
 	squarePyramidMesh.vertices = [
 		// Base
 		vec3(-1, 0, -1),
@@ -363,14 +365,14 @@ function generateSquarePyramidGeometry() {
 		vec3(0,-1,0),
 		vec3(0,-1,0),
 		vec3(0,-1,0),
-		// "Left" panel
+		// "Left" panel; probably not totally accurate but works well enough
 		vec3(-1,1,0),
 		vec3(-1,1,0),
 		vec3(-1,1,0),
 		vec3(-1,1,0),
 		vec3(-1,1,0),
 		vec3(-1,1,0),
-		// "Right" panel
+		// "Right" panel; same deal
 		vec3(1,1,0),
 		vec3(1,1,0),
 		vec3(1,1,0),
@@ -426,7 +428,7 @@ function generateGroundPlaneGeometry(width, height, uniform) {
 	// TARA: there are a total of 2*width*height triangles, with 3 vertices each,
 	// each needing a set of texture coordinates, thus 6*widht*height texture coords.
 	// Texture coordinates will depend of whether the texture is uniform or "patterned"
-	// (i.e. each square in the plane gets its own texture)
+	// (i.e. each square in the plane gets its own texture).
 	if (uniform) {
 		for(j = 0; j < height; j++){
 			for(i = 0; i < width; i++){

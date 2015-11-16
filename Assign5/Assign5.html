@@ -71,7 +71,7 @@ main()
 	float diffuseContribution = max(dot(normal, lightDirection), 0.0);
 
 	// Specular
-    vec3 eyeDirection = normalize(uCameraPosition-vPosition.xyz);
+    vec3 eyeDirection = normalize(uCameraPosition-vPosition.xyz); // depends on direction of camera
     vec3 reflectionDirection = reflect(-lightDirection, normal);
     float specularContribution = pow(max(dot(reflectionDirection, eyeDirection), 0.0), uShininess);
 
@@ -116,8 +116,7 @@ main()
             // red
             fragmentColor = vec4(1.0, 0.0, 0.0, 1.0);
         } else {
-            discard; // don't write the pixel. Information on how to do this I found here:
-            // http://gamedev.stackexchange.com/questions/100570/how-can-i-tell-a-fragment-shader-to-not-write-a-particular-pixel
+            discard; // don't write the pixel because it's not a part of the rainbow
         }
         gl_FragColor = fragmentColor; // no lighting effects if it's the rainbow
     }
@@ -142,7 +141,7 @@ main()
 Oops ... your browser doesn't support the HTML5 canvas element
 </canvas>
 <audio controls>
-  <source src="NyanCat.mp3" type="audio/mp3">
+  <source src="nyan.mp3" type="audio/mp3">
 Your browser does not support the audio element.
 </audio>
 </body>

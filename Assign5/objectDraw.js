@@ -96,6 +96,10 @@ function draw(object) {
 }
 
 //-------------------------------------------------------------------------------------
+// drawFaces():
+// This calls the correct draw function based on the number of faces the object has. 
+// Allows me to specify a special texture for a specific face of the object.
+//-------------------------------------------------------------------------------------
 function drawFaces(object) {
     switch (object.geometry.params.faces) {
         case 1:

@@ -1,0 +1,91 @@
+#####################################################################
+# instructions.txt
+# Name: Tara De Vries
+# ASUrite ID: 1204027287
+# Class: CSE 470
+# Professor: Dr. Ross Maciejewski
+# Due Date: November 16, 2015
+#####################################################################
+
+#####################################################################
+# Outline
+#####################################################################
+
+A) Navigation & Special Keys
+B) Special Functions
+C) Changes from Specs
+D) Important Notes
+E) Extra Libraries/Code Used
+
+#####################################################################
+A) Navigation & Special Keys
+
+I have implemented the graduate portion of this assignment which is 
+to move the camera forward/back and to rotate the camera. 
+
+Up key: moves the camera closer to the scene.
+Down key: moves the camera further away from the scene.
+Left key: rotates the camera to the left 2 degrees.
+Right key: rotates the camera to the right 2 degrees.
+
+Note that the same distance from the camera focus (which is the 
+center, (0,0,0)) is maintained when the camera is rotated. This means
+that no matter how you view the scene, the camera will remain focused 
+at the center.
+
+#####################################################################
+B) Special Functions
+
+I have added music to the page. Music volume can be changed and the 
+music can be played and paused using the audio control below the 
+canvas.
+
+#####################################################################
+C) Changes from Specs
+
+There are no special changes from the original assignment specs.
+
+#####################################################################
+D) Important Notes
+
+There are a total of 11 files included in the Assign5 folder:
+
+*Assign5.html--contains canvas and shader logic
+
+*Assign5.js--main Javascript file that contains the onLoad function 
+as well as loads textures and handles the key press events.
+
+*animation.js--functions relating to how the hierarchical character 
+moves around the scene.
+
+*lighting.js--contains only the lighting parameters (like light 
+position, ambient color, etc.) and a function which passes these 
+parameters to the shaders
+
+*meshData.js--contains the functions that create the geometry. There
+are 4: cube, cylinder, square pyramid, and ground plane.
+
+*modelData.js--contains the structure and attributes of the 
+hierarchical creature.
+
+*objectDraw.js--contains the functions for loading the attribute 
+buffers and passing data to the shaders as well as dealing with 
+special textures.
+
+*face.png, body.png, stars.png--images I created for special textures
+that I could not create procedurally
+
+*nyan.mp3--music file
+
+#####################################################################
+E) Extra Libraries/Code Used
+
+No additional libraries were used for this project. However, I used 
+the following sources for some help figuring out specific aspects of 
+the project:
+
+Adding music to the HTML page: 
+http://www.w3schools.com/html/html5_audio.asp
+
+"Discarding" pixels in the fragment shader: 
+http://gamedev.stackexchange.com/questions/100570/how-can-i-tell-a-fragment-shader-to-not-write-a-particular-pixel

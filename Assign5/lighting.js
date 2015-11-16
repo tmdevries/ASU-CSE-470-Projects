@@ -1,6 +1,6 @@
 //-------------------------------------------------------------------------------------
 // lighting.js
-// This file contains the global variables and functions associated with lighting.
+// This file contains the global variable and function associated with lighting.
 //-------------------------------------------------------------------------------------
 
 //-------------------------------------------------------------------------------------
