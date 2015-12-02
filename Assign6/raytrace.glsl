@@ -167,10 +167,39 @@ struct LightingProperties
 
 uniform LightingProperties uMaterialProperties[6]; 
 
-void getPhongLighting(int index, vec3 poi, vec3 normal) 
+vec3 getPhongLighting(int index, vec3 poi, vec3 normal) 
 {
     vec3 phongLight = vec3(0);
+    vec3 lightDirection;
+    float diffuseContribution;
+    vec3 eyeDirection;
+    vec3 reflectionDirection;
+    float specularContribution;
+    LightingProperties lightProps;
+    for (int i = 0; i < 16; i++)
+    {
+        if (i==index)
+            lightProps = uMaterialProperties[i];
+    }
+
     // TARA: run a for loop to obtain contributions from all lights
+    for (int i = 0; i < 2; i++) 
+    {
+        lightDirection = normalize(uLights[i].position - poi);
+        
+        // Diffuse
+        diffuseContribution = max(dot(normal, lightDirection), 0.0);
+
+        // Specular
+        eyeDirection = normalize(uCamera.eye-poi); // depends on direction of camera
+        reflectionDirection = reflect(-lightDirection, normal);
+        specularContribution = pow(max(dot(reflectionDirection, eyeDirection), 0.0), lightProps.shininess);
+
+        // Final lighting
+        phongLight += uLights[i].color*(lightProps.diffuse * diffuseContribution + lightProps.specular * specularContribution);
+    }
+
+    return phongLight + lightProps.ambient;
 }
 
 // -------------------------------------------------------------------------
@@ -219,17 +248,18 @@ void main(void)
         }
         else if( hit.index == 2 )
         {
-            // this sphere shall be red
-            Cd = vec3( 1.0, 0.0, 0.0 );
+            // this sphere shall be "ruby"
+            Cd = getPhongLighting( 0, pos, nrm );
         }
         else if( hit.index == 3 )
         {
-            // this sphere shall be blue
-            Cd = vec3( 0.0, 0.0, 1.0 );
+            // this sphere shall be "pearl"
+            Cd = getPhongLighting(3, pos, nrm);
         }
         else if( hit.index == 4 )
         {
-            Cd = vec3( 0.66, 0.26, 1.0) ;
+            // last one is "gold"
+            Cd = getPhongLighting(1, pos, nrm);
         }
 
         // add light to overall color
