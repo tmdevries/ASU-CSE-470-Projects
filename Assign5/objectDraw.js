@@ -17,12 +17,7 @@ var modelView;
 
 // Camera and Projection
 var projection;
-/*var parametricParams = {
-    t: 0,
-    a: ,
-    b: ,
-    c: 
-};*/
+
 var lpParams = {
     angle: 0, // TARA: for rotating the camera
     eye: vec3( 5.0 , 0.0 , 2.0 ), // TARA: position of the camera
