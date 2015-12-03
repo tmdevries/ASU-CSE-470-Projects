@@ -167,6 +167,8 @@ struct LightingProperties
 
 uniform LightingProperties uMaterialProperties[6]; 
 
+// TARA: function that returns the color of the pixel, including factoring in shadows
+// poi: point of intersection (i.e. pixel)
 vec3 getPhongLighting(int index, vec3 poi, vec3 normal) 
 {
     vec3 phongLight = vec3(0);
@@ -176,30 +178,61 @@ vec3 getPhongLighting(int index, vec3 poi, vec3 normal)
     vec3 reflectionDirection;
     float specularContribution;
     LightingProperties lightProps;
-    for (int i = 0; i < 16; i++)
+
+    for (int i = 0; i < 6; i++)
     {
         if (i==index)
             lightProps = uMaterialProperties[i];
-    }
+    } // slightly hacky way to make GLSL compiler happy
 
     // TARA: run a for loop to obtain contributions from all lights
     for (int i = 0; i < 2; i++) 
     {
-        lightDirection = normalize(uLights[i].position - poi);
-        
-        // Diffuse
-        diffuseContribution = max(dot(normal, lightDirection), 0.0);
+        lightDirection = normalize( uLights[i].position - poi );
 
-        // Specular
-        eyeDirection = normalize(uCamera.eye-poi); // depends on direction of camera
-        reflectionDirection = reflect(-lightDirection, normal);
-        specularContribution = pow(max(dot(reflectionDirection, eyeDirection), 0.0), lightProps.shininess);
+        //Secondary rays. Only computed since a hit was found!
+        Ray shadowRay = Ray( poi + lightDirection * uSettings.epsilon * 100.0, lightDirection );
+        Dist shadowIntersect = raymarch( shadowRay );
 
-        // Final lighting
-        phongLight += uLights[i].color*(lightProps.diffuse * diffuseContribution + lightProps.specular * specularContribution);
+        if (shadowIntersect.index == -1)
+        {
+            // No hit found between poi and light source, so there is no shadow here (for this source)
+            
+            // Diffuse
+            diffuseContribution = max( dot( normal, lightDirection ), 0.0 );
+
+            // Specular
+            eyeDirection = normalize( uCamera.eye - poi ); // depends on direction of camera
+            reflectionDirection = reflect( -lightDirection, normal );
+            specularContribution = pow( max( dot( reflectionDirection, eyeDirection ), 0.0 ), lightProps.shininess );
+
+            // Add 'em all together
+            phongLight += uLights[i].color * ( lightProps.diffuse * diffuseContribution + lightProps.specular * specularContribution );
+        }
     }
 
     return phongLight + lightProps.ambient;
+}
+
+int getMaterialPropertyIndex(int index)
+{
+    // TARA: The values for these indices can be found in renderer.js
+    if( index == 1 )
+    {
+        return 2;
+    }
+    else if( index == 2 )
+    {
+        return 0;
+    }
+    else if( index == 3 )
+    {
+        return 3;
+    }
+    else if( index == 4 )
+    {
+        return 1;
+    }
 }
 
 // -------------------------------------------------------------------------
@@ -239,30 +272,17 @@ void main(void)
 
         // based upon the index of the object hit,
         // set material properties (for now only diffuse color Cd)
-        if( hit.index == 1 )
+        int materialProperty = getMaterialPropertyIndex( hit.index );
+        Cd = getPhongLighting( materialProperty, pos, nrm );
+
+        if ( hit.index == 1 ) 
         {
             // the plane shall have a checkerboard pattern
             float f = mod( floor(2.0*pos.z) + floor(2.0*pos.x), 2.0);
-
-            Cd = vec3( 0.8 + 0.1*f*vec3(1.0) );
-        }
-        else if( hit.index == 2 )
-        {
-            // this sphere shall be "ruby"
-            Cd = getPhongLighting( 0, pos, nrm );
-        }
-        else if( hit.index == 3 )
-        {
-            // this sphere shall be "pearl"
-            Cd = getPhongLighting(3, pos, nrm);
-        }
-        else if( hit.index == 4 )
-        {
-            // last one is "gold"
-            Cd = getPhongLighting(1, pos, nrm);
+            Cd *= vec3( 0.8 + 0.1*f*vec3(1.0) );
         }
 
-        // add light to overall color
+        // add light to overall color; may not need finalColor variable but we'll see
         finalColor += Cd;
     }
 
