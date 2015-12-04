@@ -1,0 +1,77 @@
+#####################################################################
+# instructions.txt
+# Name: Tara De Vries
+# Class: CSE 470
+# Professor: Dr. Ross Maciejewski
+# Due Date: December 3, 2015
+#####################################################################
+
+#####################################################################
+# Outline
+#####################################################################
+
+A) Navigation & Special Keys
+B) Special Functions
+C) Changes from Specs
+D) Important Notes
+E) Extra Libraries/Code Used
+
+#####################################################################
+A) Navigation & Special Keys
+
+There is nothing added to navigation/control functions, they are as
+they were given is the original code. (So, panning, rotating, and 
+zooming are all left alone as well as the ability to change the 
+epsilon)
+
+#####################################################################
+B) Special Functions
+
+No special functions implemented.
+
+#####################################################################
+C) Changes from Specs
+
+I did not negotiate any changes from the original specs of the 
+assignment.
+
+#####################################################################
+D) Important Notes
+
+I added several material properties (ruby, pearl, chrome, turquoise,
+green rubber, and gold) into renderer.js in the same place where the
+camera and lights are passed to the shader. This was necessary due to
+the nature of the processing on the graphics card (which I discovered
+via thorough Google-ing). 
+
+The material properties came from this webpage: 
+http://devernay.free.fr/cours/opengl/materials.html. Additionally, 
+the reflectiveness for each material is the same as the shininess 
+without multiplying by 128, except for chrome, which I made be a 
+reflectiveness of 1 (to be mirror-like).
+
+I kept the checkerboard pattern so that you can better see how the
+reflection is implemented. Look closely at the spheres, especially
+the gold sphere, to see that the checkerboard pattern is returned in
+the reflection too.
+
+The sphere for which the implementation of reflection is most clear
+is the gold sphere.
+
+The additional 3D object I used was a torus.
+
+You will see that in several places I employed a kind of "hack" for
+array access (it should also be commented), which I learned after 
+seeing the compiler error and finding a StackOverflow answer about 
+it. I make a for loop and when I get to the number of the index I 
+want to access, I use the loop index to access the array. Frustrating,
+but fun to learn how/why the GPU differs from the CPU in how code gets
+compiled :)
+
+#####################################################################
+E) Extra Libraries/Code Used
+
+The original torus function was obtained here:
+http://iquilezles.org/www/articles/distfunctions/distfunctions.htm
+I then modified the code, similar to how the sphere is, to allow the
+torus to be translated.

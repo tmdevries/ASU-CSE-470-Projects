@@ -103,25 +103,25 @@ Renderer.prototype.updateUniforms = function() {
     this.gl.uniform3f(this.gl.getUniformLocation(this.program,"uMaterialProperties[2].diffuse"),0.4,0.4,0.4);
     this.gl.uniform3f(this.gl.getUniformLocation(this.program,"uMaterialProperties[2].specular"),0.774597,0.774597,0.774597);
     this.gl.uniform1f(this.gl.getUniformLocation(this.program,"uMaterialProperties[2].shininess"), 76.8);
-    this.gl.uniform1f(this.gl.getUniformLocation(this.program,"uMaterialProperties[2].reflectivity"), 0.6);
+    this.gl.uniform1f(this.gl.getUniformLocation(this.program,"uMaterialProperties[2].reflectivity"), 1.0);
     //pearl
     this.gl.uniform3f(this.gl.getUniformLocation(this.program,"uMaterialProperties[3].ambient"),0.25,0.20725,0.20725);
     this.gl.uniform3f(this.gl.getUniformLocation(this.program,"uMaterialProperties[3].diffuse"),1.0,0.829,0.829);
     this.gl.uniform3f(this.gl.getUniformLocation(this.program,"uMaterialProperties[3].specular"),0.296648,0.296648,0.296648);
     this.gl.uniform1f(this.gl.getUniformLocation(this.program,"uMaterialProperties[3].shininess"), 11.3);
-    this.gl.uniform1f(this.gl.getUniformLocation(this.program,"uMaterialProperties[3].reflectivity"), 0.1);
+    this.gl.uniform1f(this.gl.getUniformLocation(this.program,"uMaterialProperties[3].reflectivity"), 0.088);
     //turquoise
     this.gl.uniform3f(this.gl.getUniformLocation(this.program,"uMaterialProperties[4].ambient"),0.1,0.18725,0.1745);
     this.gl.uniform3f(this.gl.getUniformLocation(this.program,"uMaterialProperties[4].diffuse"),0.396,0.74151,0.69102);
     this.gl.uniform3f(this.gl.getUniformLocation(this.program,"uMaterialProperties[4].specular"),0.297254,0.30829,0.306678);
     this.gl.uniform1f(this.gl.getUniformLocation(this.program,"uMaterialProperties[4].shininess"), 12.8);
-    this.gl.uniform1f(this.gl.getUniformLocation(this.program,"uMaterialProperties[4].reflectivity"), 0.3);
+    this.gl.uniform1f(this.gl.getUniformLocation(this.program,"uMaterialProperties[4].reflectivity"), 0.1);
     //green rubber
     this.gl.uniform3f(this.gl.getUniformLocation(this.program,"uMaterialProperties[5].ambient"),0.0,0.05,0.0);
     this.gl.uniform3f(this.gl.getUniformLocation(this.program,"uMaterialProperties[5].diffuse"),0.4,0.5,0.4);
     this.gl.uniform3f(this.gl.getUniformLocation(this.program,"uMaterialProperties[5].specular"),0.04,0.7,0.04);
     this.gl.uniform1f(this.gl.getUniformLocation(this.program,"uMaterialProperties[5].shininess"), 10.0);
-    this.gl.uniform1f(this.gl.getUniformLocation(this.program,"uMaterialProperties[5].reflectivity"), 0.0);
+    this.gl.uniform1f(this.gl.getUniformLocation(this.program,"uMaterialProperties[5].reflectivity"), 0.078125);
 }
 
 // Renders the Scene
