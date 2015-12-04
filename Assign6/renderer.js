@@ -91,31 +91,37 @@ Renderer.prototype.updateUniforms = function() {
     this.gl.uniform3f(this.gl.getUniformLocation(this.program,"uMaterialProperties[0].diffuse"),0.61424,0.04136,0.04136);
     this.gl.uniform3f(this.gl.getUniformLocation(this.program,"uMaterialProperties[0].specular"),0.727811,0.626959,0.626959);
     this.gl.uniform1f(this.gl.getUniformLocation(this.program,"uMaterialProperties[0].shininess"), 76.8);
+    this.gl.uniform1f(this.gl.getUniformLocation(this.program,"uMaterialProperties[0].reflectivity"), 0.6);
     //gold
     this.gl.uniform3f(this.gl.getUniformLocation(this.program,"uMaterialProperties[1].ambient"),0.24725,0.1995,0.0745);
     this.gl.uniform3f(this.gl.getUniformLocation(this.program,"uMaterialProperties[1].diffuse"),0.75164,0.60648,0.22648);
     this.gl.uniform3f(this.gl.getUniformLocation(this.program,"uMaterialProperties[1].specular"),0.628281,0.555802,0.366065);
 	this.gl.uniform1f(this.gl.getUniformLocation(this.program,"uMaterialProperties[1].shininess"), 51.2);
+    this.gl.uniform1f(this.gl.getUniformLocation(this.program,"uMaterialProperties[1].reflectivity"), 0.4);
     //chrome
     this.gl.uniform3f(this.gl.getUniformLocation(this.program,"uMaterialProperties[2].ambient"),0.25,0.25,0.25);
     this.gl.uniform3f(this.gl.getUniformLocation(this.program,"uMaterialProperties[2].diffuse"),0.4,0.4,0.4);
     this.gl.uniform3f(this.gl.getUniformLocation(this.program,"uMaterialProperties[2].specular"),0.774597,0.774597,0.774597);
     this.gl.uniform1f(this.gl.getUniformLocation(this.program,"uMaterialProperties[2].shininess"), 76.8);
+    this.gl.uniform1f(this.gl.getUniformLocation(this.program,"uMaterialProperties[2].reflectivity"), 0.6);
     //pearl
     this.gl.uniform3f(this.gl.getUniformLocation(this.program,"uMaterialProperties[3].ambient"),0.25,0.20725,0.20725);
     this.gl.uniform3f(this.gl.getUniformLocation(this.program,"uMaterialProperties[3].diffuse"),1.0,0.829,0.829);
     this.gl.uniform3f(this.gl.getUniformLocation(this.program,"uMaterialProperties[3].specular"),0.296648,0.296648,0.296648);
     this.gl.uniform1f(this.gl.getUniformLocation(this.program,"uMaterialProperties[3].shininess"), 11.3);
+    this.gl.uniform1f(this.gl.getUniformLocation(this.program,"uMaterialProperties[3].reflectivity"), 0.1);
     //turquoise
     this.gl.uniform3f(this.gl.getUniformLocation(this.program,"uMaterialProperties[4].ambient"),0.1,0.18725,0.1745);
     this.gl.uniform3f(this.gl.getUniformLocation(this.program,"uMaterialProperties[4].diffuse"),0.396,0.74151,0.69102);
     this.gl.uniform3f(this.gl.getUniformLocation(this.program,"uMaterialProperties[4].specular"),0.297254,0.30829,0.306678);
     this.gl.uniform1f(this.gl.getUniformLocation(this.program,"uMaterialProperties[4].shininess"), 12.8);
-    //black rubber
-    this.gl.uniform3f(this.gl.getUniformLocation(this.program,"uMaterialProperties[5].ambient"),0.02,0.02,0.02);
-    this.gl.uniform3f(this.gl.getUniformLocation(this.program,"uMaterialProperties[5].diffuse"),0.01,0.01,0.01);
-    this.gl.uniform3f(this.gl.getUniformLocation(this.program,"uMaterialProperties[5].specular"),0.4,0.4,0.4);
+    this.gl.uniform1f(this.gl.getUniformLocation(this.program,"uMaterialProperties[4].reflectivity"), 0.3);
+    //green rubber
+    this.gl.uniform3f(this.gl.getUniformLocation(this.program,"uMaterialProperties[5].ambient"),0.0,0.05,0.0);
+    this.gl.uniform3f(this.gl.getUniformLocation(this.program,"uMaterialProperties[5].diffuse"),0.4,0.5,0.4);
+    this.gl.uniform3f(this.gl.getUniformLocation(this.program,"uMaterialProperties[5].specular"),0.04,0.7,0.04);
     this.gl.uniform1f(this.gl.getUniformLocation(this.program,"uMaterialProperties[5].shininess"), 10.0);
+    this.gl.uniform1f(this.gl.getUniformLocation(this.program,"uMaterialProperties[5].reflectivity"), 0.0);
 }
 
 // Renders the Scene
