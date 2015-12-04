@@ -1,7 +1,6 @@
 #####################################################################
 # instructions.txt
 # Name: Tara De Vries
-# ASUrite ID: 1204027287
 # Class: CSE 470
 # Professor: Dr. Ross Maciejewski
 # Due Date: November 16, 2015
