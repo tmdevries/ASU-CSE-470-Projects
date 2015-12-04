@@ -2,6 +2,7 @@ precision mediump float;
 
 const float INFINITY = 1e9;
 const int   MAX_MARCHING_STEPS = 400;
+const int REFLECTION_DEPTH = 3;
 
 // -------------------------------------------------------------------------
 
@@ -318,7 +319,7 @@ void main(void)
             Ray reflectRay;
             Dist reflectIntersect;
             vec3 reflectionDirection;
-            for ( int i = 0; i < 3; i++ )
+            for ( int i = 0; i < REFLECTION_DEPTH; i++ )
             {
                 reflectionDirection = reflect(pos-r.o, nrm);
                 reflectRay = Ray( pos + reflectionDirection * uSettings.epsilon * 100.0, reflectionDirection );
